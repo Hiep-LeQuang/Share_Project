@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane fx:id="gridPane" prefHeight="650.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project_JavaFx.Controller.Main.MainController">
+   <stylesheets>
+        <URL value="@Style.css" />
+    </stylesheets>
+    <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="678.0" minWidth="10.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1195.0" minWidth="10.0" prefWidth="1166.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="377.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="588.0" minHeight="10.0" prefHeight="588.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <HBox fx:id="hboxMain" GridPane.columnIndex="1">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quản Lý Bán Ô Tô" textAlignment="CENTER" wrappingWidth="648.66015625">
+               <font>
+                  <Font name="System Bold Italic" size="50.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="200.0" top="25.0" />
+               </HBox.margin>
+            </Text>
+            <MenuButton mnemonicParsing="false" prefHeight="34.0" prefWidth="122.0" text="Tài Khoản">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#btnAccount" text="Quản Lý" />
+                <MenuItem mnemonicParsing="false" onAction="#btnLogOut" text="Đăng Xuất" />
+              </items>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="150.0" top="5.0" />
+               </HBox.margin>
+            </MenuButton>
+         </children>
+      </HBox>
+      <Pane prefHeight="504.0" prefWidth="186.0" GridPane.rowIndex="1">
+         <children>
+            <VBox fx:id="vboxBar" prefHeight="529.0" prefWidth="167.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#btnProduct" prefHeight="43.0" prefWidth="146.0" text="Sản Phẩm">
+                     <VBox.margin>
+                        <Insets left="10.0" top="35.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <MenuButton alignment="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="44.0" prefWidth="146.0" text="Quản Lý" textAlignment="CENTER">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#btnCategory" text="Danh Mục" />
+                      <MenuItem mnemonicParsing="false" onAction="#btnBrand" text="Thương Hiệu" />
+                        <MenuItem mnemonicParsing="false" onAction="#btnColor" text="Màu Xe" />
+                    </items>
+                     <VBox.margin>
+                        <Insets left="10.0" top="50.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </MenuButton>
+                  <Button mnemonicParsing="false" onAction="#btnContract" prefHeight="45.0" prefWidth="147.0" text="Hợp Đồng">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="50.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#btnCustomer" prefHeight="45.0" prefWidth="147.0" text="Khách Hàng">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="50.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane fx:id="secPane" prefHeight="529.0" prefWidth="1134.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <ImageView fitHeight="529.0" fitWidth="986.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Picture/CarBeauty.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Button mnemonicParsing="false" onAction="#btnLogo" prefHeight="121.0" prefWidth="169.0" style="-fx-background-color: aquamarine;;">
+         <graphic>
+            <ImageView fitHeight="108.0" fitWidth="236.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Picture/logo.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</GridPane>

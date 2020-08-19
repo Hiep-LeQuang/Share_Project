@@ -1,0 +1,42 @@
+#root {
+        -fx-background-color:  linear-gradient(lightgray, gray);
+        -fx-border-color: white;
+        -fx-border-radius: 20;
+        -fx-padding: 10 10 10 10;
+        -fx-background-radius: 20;
+       
+}
+ 
+#bp {
+        -fx-background-color:  linear-gradient(gray,DimGrey );
+       
+}
+ 
+#btnLogin {
+    -fx-background-radius: 30;
+}
+
+#btnLogin:hover{
+    -fx-border-radius: 32;
+    -fx-border-color: blue;
+}
+
+#btnCancel {
+    -fx-background-radius: 30;
+}
+
+#btnCancel:hover{
+    -fx-border-radius: 32;
+    -fx-border-color: blue;
+}
+
+
+#text {
+        -fx-fill:  linear-gradient(orange , orangered);
+}
+
+
+#gridPane{
+    -fx-background-color: aquamarine;
+}
+

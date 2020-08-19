@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project_JavaFx.Controller.Category.CUCategoryController">
+   <children>
+      <Text layoutX="382.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Danh Mục" textAlignment="CENTER" wrappingWidth="229.49853515625">
+         <font>
+            <Font name="System Bold Italic" size="40.0" />
+         </font>
+      </Text>
+      <Text layoutX="291.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên danh mục" textAlignment="CENTER" wrappingWidth="137.49853515625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Pane layoutX="10.0" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #03fcec;">
+         <children>
+            <ImageView fitHeight="201.0" fitWidth="200.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Picture/car_1.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Button layoutX="551.0" layoutY="402.0" mnemonicParsing="false" onAction="#btnCancel" prefHeight="52.0" prefWidth="121.0" text="Đóng">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Picture/close.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="308.0" layoutY="401.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="55.0" prefWidth="121.0" text="Lưu">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="41.0" fitWidth="30.0" layoutX="315.0" layoutY="414.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Picture/insert1.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtCategory" layoutX="465.0" layoutY="180.0" onAction="#txtCategory" prefHeight="37.0" prefWidth="238.0" />
+      <Text layoutX="332.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trạng Thái" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="cbxStatus" layoutX="462.0" layoutY="260.0" onAction="#cbxStatus" prefHeight="40.0" prefWidth="200.0" />
+   </children>
+</Pane>
