@@ -165,4 +165,19 @@ public class Category {
             return false;
         }
     }
+    
+    public static boolean checkCategory(String categoryName){
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Category Where categoryName = '"+ categoryName +"'");){
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
 }

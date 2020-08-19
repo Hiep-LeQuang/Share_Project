@@ -5,7 +5,7 @@
  */
 package Project_JavaFx.Controller.Contract;
 
-import Project_JavaFx.Controller.Car.Car;
+import Project_JavaFx.Controller.Customer.Customer;
 import Project_JavaFx.Controller.DbService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,12 +26,13 @@ import javafx.collections.ObservableList;
 public class Contract {
     private ObjectProperty<Integer> contractID;
     private ObjectProperty<Integer> carID;
-    private StringProperty sku;
+    private StringProperty seri;
     private StringProperty carName;
     private StringProperty productReceiptDate;
     private ObjectProperty<Integer> price;
     private ObjectProperty<Integer> deposits;
     private StringProperty customerName;
+    private StringProperty cmnd;
     private StringProperty phone;
     private StringProperty address;
     private ObjectProperty<Integer> customerID;
@@ -44,12 +45,13 @@ public class Contract {
         contractID = new SimpleObjectProperty<>(null);
         carID = new SimpleObjectProperty<>(null);
         customerID = new SimpleObjectProperty<>(null);
-        sku = new SimpleStringProperty();
+        seri = new SimpleStringProperty();
         carName = new SimpleStringProperty();
         productReceiptDate = new SimpleStringProperty();
         price = new SimpleObjectProperty<>(0);
         deposits = new SimpleObjectProperty<>(0);
         customerName = new SimpleStringProperty();
+        cmnd = new SimpleStringProperty();
         phone = new SimpleStringProperty();
         status = new SimpleStringProperty();
         note = new SimpleStringProperty();
@@ -71,12 +73,16 @@ public class Contract {
         return this.customerID.get();
     }
     
-    public String getSku() {
-        return sku.get();
+    public String getSeri() {
+        return seri.get();
     }
     
     public String getCarName() {
         return carName.get();
+    }
+    
+    public String getCmnd() {
+        return cmnd.get();
     }
     
     public String getProductReceiptDate() {
@@ -131,8 +137,8 @@ public class Contract {
         this.carID.set(carID);
     }
 
-    public void setSku(String sku) {
-        this.sku.set(sku);
+    public void setSeri(String seri) {
+        this.seri.set(seri);
     }
     
     public void setCarName(String carName) {
@@ -153,6 +159,10 @@ public class Contract {
     
     public void setCustomerName(String customerName) {
         this.customerName.set(customerName);
+    }
+    
+    public void setCmnd(String cmnd) {
+        this.cmnd.set(cmnd);
     }
     
     public void setPhone(String phone) {
@@ -193,8 +203,8 @@ public class Contract {
         return this.carID;
     }
 
-    public StringProperty getCarSkuProperty() {
-        return this.sku;
+    public StringProperty getSeriProperty() {
+        return this.seri;
     }
 
     public StringProperty getCarNameProperty() {
@@ -215,6 +225,10 @@ public class Contract {
 
     public StringProperty getCustomerNameProperty() {
         return this.customerName;
+    }
+    
+    public StringProperty getCmndProperty() {
+        return this.cmnd;
     }
 
     public StringProperty getPhoneProperty() {
@@ -255,17 +269,18 @@ public class Contract {
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT contract.contractID, car.carID, contract.customerID, car.sku, car.carName, contract.productReceiptDate, contract.status , contract.note,  contract.accountant, contract.dateOfSale, contract.price, contract.deposits, customer.customerName,customer.email, customer.phone, customer.address FROM contract, car, customer WHERE contract.CarID = car.carID AND contract.customerID = customer.customerID");){
+                ResultSet rs = stmt.executeQuery("SELECT contract.contractID, car.carID, contract.customerID, car.seri, car.carName, contract.productReceiptDate, contract.status , contract.note,  contract.accountant, contract.dateOfSale, contract.price, contract.deposits, customer.customerName, customer.cmnd , customer.email, customer.phone, customer.address FROM contract, car, customer WHERE contract.CarID = car.carID AND contract.customerID = customer.customerID");){
             
             while (rs.next()) {
                 Contract c = new Contract();
                 c.setContractID(rs.getInt("contractID"));
-                c.setSku(rs.getString("sku"));
+                c.setSeri(rs.getString("seri"));
                 c.setCarName(rs.getString("carName"));
                 c.setProductReceiptDate(rs.getString("productReceiptDate"));
                 c.setPrice(rs.getInt("price"));
                 c.setDeposits(rs.getInt("deposits"));
                 c.setCustomerName(rs.getString("customerName"));
+                c.setCmnd(rs.getString("cmnd"));
                 c.setPhone(rs.getString("phone"));
                 c.setAddress(rs.getString("address"));
                 c.setCustomerID(rs.getInt("customerID"));
@@ -394,11 +409,11 @@ public class Contract {
         }
     }
     
-     public int getCarID(String sku){
+     public int getCarID(String seri){
         try {
             Connection connection = DbService.getConnection();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from car where sku = '" +sku + "'" );
+            ResultSet rs = st.executeQuery("select * from car where seri = '" +seri + "'" );
             if(rs.next()){
                 return rs.getInt("carID");
             } else{
@@ -426,11 +441,11 @@ public class Contract {
         }
     }
     
-    public static String getCar(String sku){
+    public static String getCar(String seri){
         try {
             Connection connection = DbService.getConnection();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select car.carName from car where sku = '" +sku + "'" );
+            ResultSet rs = st.executeQuery("select car.carName from car where seri = '" +seri + "'" );
             if(rs.next()){
                 
                 return rs.getString(1);
@@ -441,5 +456,45 @@ public class Contract {
             ex.printStackTrace();
             return null;
         }
+    }
+    
+    public static ObservableList<Contract> getContract(int customerID){
+        ObservableList contracts = null;
+        try {
+            Connection connection = DbService.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("SELECT contract.contractID, car.carID, contract.customerID, car.seri, car.carName, contract.productReceiptDate, contract.status , contract.note,  contract.accountant, contract.dateOfSale, contract.price, contract.deposits, customer.customerName, customer.cmnd , customer.email, customer.phone, customer.address FROM contract, car, customer WHERE contract.CarID = car.carID AND contract.customerID = customer.customerID AND customer.customerID =" +customerID );
+
+            contracts = FXCollections.observableArrayList();
+            while(rs.next()){
+                Contract c = new Contract();
+                c.setContractID(rs.getInt("contractID"));
+                c.setSeri(rs.getString("seri"));
+                c.setCarName(rs.getString("carName"));
+                c.setProductReceiptDate(rs.getString("productReceiptDate"));
+                c.setPrice(rs.getInt("price"));
+                c.setDeposits(rs.getInt("deposits"));
+                c.setCustomerName(rs.getString("customerName"));
+                c.setCmnd(rs.getString("cmnd"));
+                c.setPhone(rs.getString("phone"));
+                c.setAddress(rs.getString("address"));
+                c.setCustomerID(rs.getInt("customerID"));
+                if(rs.getInt("status") == 1){
+                     c.setStatus("Đã Giao");
+                } else{
+                    c.setStatus("Chờ Lấy Hàng");
+                }
+                c.setNote(rs.getString("note"));
+                c.setAccountant(rs.getString("accountant"));
+                c.setDateOfSale(rs.getString("dateOfSale"));
+                c.setEmail(rs.getString("email"));
+                c.setCarID(rs.getInt("carID"));
+                
+                contracts.add(c);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return contracts;
     }
 }

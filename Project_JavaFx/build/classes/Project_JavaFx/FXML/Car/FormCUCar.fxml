@@ -74,7 +74,7 @@
       <ComboBox fx:id="cbxFuel" layoutX="809.0" layoutY="331.0" onAction="#cbxFuel" prefHeight="31.0" prefWidth="214.0" />
       <ComboBox fx:id="cbxColor" layoutX="809.0" layoutY="133.0" onAction="#cbxColor" prefHeight="31.0" prefWidth="214.0" />
       <TextField fx:id="txtYear" layoutX="379.0" layoutY="400.0" onAction="#txtYear" prefHeight="31.0" prefWidth="214.0" />
-      <TextField fx:id="txtSku" layoutX="379.0" layoutY="136.0" onAction="#txtSku" prefHeight="31.0" prefWidth="214.0" />
+      <TextField fx:id="txtSeri" layoutX="379.0" layoutY="136.0" onAction="#txtSeri" prefHeight="31.0" prefWidth="214.0" />
       <Label layoutX="290.0" layoutY="143.0" text="Seri Xe" />
       <ComboBox fx:id="cbxSeat" layoutX="809.0" layoutY="199.0" onAction="#cbxSeat" prefHeight="31.0" prefWidth="214.0" />
       <ComboBox fx:id="cbxGear" layoutX="809.0" layoutY="267.0" onAction="#cbxGear" prefHeight="31.0" prefWidth="214.0" />

@@ -5,8 +5,11 @@
  */
 package Project_JavaFx.Controller.Customer;
 
+import Project_JavaFx.Controller.Contract.Contract;
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
+import java.sql.SQLException;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -18,11 +21,15 @@ import javafx.scene.control.TableView;
  * @author lehie
  */
 public class CustomerController {
+
     @FXML
     private TableView<Customer> tvCustomer;
 
     @FXML
     private TableColumn<Customer, String> tcName;
+
+    @FXML
+    private TableColumn<Customer, String> tcCmnd;
 
     @FXML
     private TableColumn<Customer, String> tcphone;
@@ -32,11 +39,6 @@ public class CustomerController {
 
     @FXML
     private TableColumn<Customer, String> tcEmail;
-    
-    @FXML
-    void btnCancel(ActionEvent event) throws IOException {
-        Navigator.getInstance().goToMain();
-    }
 
     @FXML
     void btnCreate(ActionEvent event) throws IOException {
@@ -46,6 +48,13 @@ public class CustomerController {
     @FXML
     void btnSearch(ActionEvent event) {
 
+    }
+
+    @FXML
+    void btnContract(ActionEvent event) throws IOException, SQLException {
+        Customer customer = tvCustomer.getSelectionModel().getSelectedItem();
+        ObservableList<Contract> contracts = Contract.getContract(customer.getCustomerID());
+        Navigator.getInstance().goToContract(contracts);
     }
 
     @FXML
@@ -63,31 +72,35 @@ public class CustomerController {
     void txtSearch(ActionEvent event) {
 
     }
-    
+
     private void selectedCustomerWarning() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Vui lòng chọn một hợp đồng");
         alert.setHeaderText("Bạn phải chọn một hợp đồng ở trong danh sách");
         alert.showAndWait();
     }
-    
-    public void initialize(){
-        
+
+    public void initialize() {
+
         tvCustomer.setItems(Customer.selectAll());
-        
-        tcName.setCellValueFactory((Customer)->{
+
+        tcName.setCellValueFactory((Customer) -> {
             return Customer.getValue().getCustomerNameProperty();
         });
-        
-        tcphone.setCellValueFactory((Customer)->{
+
+        tcCmnd.setCellValueFactory((Customer) -> {
+            return Customer.getValue().getCmndProperty();
+        });
+
+        tcphone.setCellValueFactory((Customer) -> {
             return Customer.getValue().getPhoneProperty();
         });
-        
-        tcAddress.setCellValueFactory((Customer)->{
+
+        tcAddress.setCellValueFactory((Customer) -> {
             return Customer.getValue().getAddressProperty();
         });
-        
-        tcEmail.setCellValueFactory((Customer)->{
+
+        tcEmail.setCellValueFactory((Customer) -> {
             return Customer.getValue().getEmailProperty();
         });
     }

@@ -130,11 +130,6 @@ public class CarController {
     }
 
     @FXML
-    void btnCancel(ActionEvent event) {
-        System.exit(0);
-    }
-
-    @FXML
     void btnHonda(ActionEvent event) {
 
     }
@@ -154,7 +149,7 @@ public class CarController {
         tvCars.setItems(Car.selectAll());
 
         tcSeri.setCellValueFactory((Car) -> {
-            return Car.getValue().getCarSkuProperty();
+            return Car.getValue().getSeriProperty();
         });
 
         tcProduct.setCellValueFactory((Car) -> {
@@ -189,7 +184,7 @@ public class CarController {
         tvCars.setItems(Car.selectCategory1());
         tvCars.refresh();
         tcSeri.setCellValueFactory((Car) -> {
-            return Car.getValue().getCarSkuProperty();
+            return Car.getValue().getSeriProperty();
         });
         tcProduct.setCellValueFactory((Car) -> {
             return Car.getValue().getCarNameProperty();
@@ -223,7 +218,7 @@ public class CarController {
         tvCars.setItems(Car.selectCategory2());
         tvCars.refresh();
         tcSeri.setCellValueFactory((Car) -> {
-            return Car.getValue().getCarSkuProperty();
+            return Car.getValue().getSeriProperty();
         });
         tcProduct.setCellValueFactory((Car) -> {
             return Car.getValue().getCarNameProperty();

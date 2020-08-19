@@ -25,11 +25,6 @@ public class ColorController {
     private TableColumn<Color, String> tcColor;
 
     @FXML
-    void btnCancel(ActionEvent event) {
-        System.exit(0);
-    }
-
-    @FXML
     void btnCreate(ActionEvent event) throws IOException {
         Navigator.getInstance().goToCreateColor(null);
     }

@@ -20,7 +20,8 @@ import java.io.IOException;
  * @author lehie
  */
 public class AccountController {
-     @FXML
+
+    @FXML
     private TableView<Account> tvAccount;
 
     @FXML
@@ -30,8 +31,8 @@ public class AccountController {
     private TableColumn<Account, String> tcPass;
 
     @FXML
-    void btnCancel(ActionEvent event) throws IOException {
-        Navigator.getInstance().goToMain();
+    void btnCUAccount(ActionEvent event) throws IOException {
+        Navigator.getInstance().goToCreateAccount();
     }
 
     @FXML
@@ -51,14 +52,20 @@ public class AccountController {
 
                 if (result) {
                     tvAccount.getItems().remove(selectedAccount);
-                    System.out.println("Tài khoản đã được xóa thành công");
+                    Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                    alert1.setTitle("Thông Báo");
+                    alert1.setHeaderText("Tài khoản đã được xóa thành công ?");
+                    alert1.show();
                 } else {
-                    System.out.println("Tài khoản xóa không thành công");
+                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                    alert2.setTitle("Thông Báo");
+                    alert2.setHeaderText("Xóa tài khoản không thành công ?");
+                    alert2.show();
                 }
             }
         }
     }
-    
+
     private void selectedAccountWarning() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Vui lòng chọn một tài khoản");
@@ -75,7 +82,7 @@ public class AccountController {
     void txtSearch(ActionEvent event) {
 
     }
-    
+
     public void initialize() {
 
         tvAccount.setItems(Account.selectAll());

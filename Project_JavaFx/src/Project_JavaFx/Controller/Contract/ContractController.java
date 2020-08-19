@@ -8,7 +8,9 @@ package Project_JavaFx.Controller.Contract;
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -44,10 +46,7 @@ public class ContractController {
     private TableColumn<Contract, String> tcCustomerName;
 
     @FXML
-    private TableColumn<Contract, String> tcPhone;
-
-    @FXML
-    private TableColumn<Contract, String> tcAddress;
+    private TableColumn<Contract, String> tcDos;
     
     @FXML
     private TableColumn<Contract, String> tcStatus;
@@ -70,6 +69,11 @@ public class ContractController {
     @FXML
     void btnSearch(ActionEvent event) {
 
+    }
+    
+    @FXML
+    void btnCancel(ActionEvent event) throws IOException {
+        Navigator.getInstance().goToMain();
     }
 
     @FXML
@@ -135,18 +139,13 @@ public class ContractController {
             Contract.update(updateStatus);
         }
     }
-
-    @FXML
-    void btnCancel(ActionEvent event) {
-        System.exit(0);
-    }
-
+    
     public void initialize() {
 
         tvContract.setItems(Contract.selectAll());
 
         tcSeri.setCellValueFactory((Contract) -> {
-            return Contract.getValue().getCarSkuProperty();
+            return Contract.getValue().getSeriProperty();
         });
         tcCarName.setCellValueFactory((Contract) -> {
             return Contract.getValue().getCarNameProperty();
@@ -163,12 +162,38 @@ public class ContractController {
         tcCustomerName.setCellValueFactory((Contract) -> {
             return Contract.getValue().getCustomerNameProperty();
         });
-        tcPhone.setCellValueFactory((Contract) -> {
-            return Contract.getValue().getPhoneProperty();
+        tcDos.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getDateOfSaleProperty();
         });
-        tcAddress.setCellValueFactory((Contract) -> {
-            return Contract.getValue().getAddressProperty();
-        });  
+        tcStatus.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getStatusProperty();
+        });
+    }
+
+    public void initialize(List<Contract> contracts) {
+         tvContract.setItems((ObservableList<Contract>) contracts);
+
+        tcSeri.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getSeriProperty();
+        });
+        tcCarName.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getCarNameProperty();
+        });
+        tcReceiptDate.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getProductReceiptDateProperty();
+        });
+        tcPrice.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getPriceProperty();
+        });
+        tcDeposits.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getDepositsProperty();
+        });
+        tcCustomerName.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getCustomerNameProperty();
+        });
+        tcDos.setCellValueFactory((Contract) -> {
+            return Contract.getValue().getDateOfSaleProperty();
+        });
         tcStatus.setCellValueFactory((Contract) -> {
             return Contract.getValue().getStatusProperty();
         });

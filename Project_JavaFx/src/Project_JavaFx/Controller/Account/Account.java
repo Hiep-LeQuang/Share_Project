@@ -5,7 +5,6 @@
  */
 package Project_JavaFx.Controller.Account;
 
-import Project_JavaFx.Controller.Contract.Contract;
 import Project_JavaFx.Controller.DbService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -175,5 +174,39 @@ public class Account {
             System.out.println(e);
             return false;
         }
+    }
+    
+    public static boolean checkUser(String userName){
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Account Where userName = '"+ userName +"'");){
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+    
+    public static Account checkAccount(String userName, String password){
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Account Where userName = '"+ userName + "' AND password = '"+ password +"'");){
+            
+            if(rs.next()){
+                Account a = new Account();
+                a.setAccountID(rs.getInt("accountID"));
+                a.setUserName(rs.getString("userName"));
+                a.setPassword(rs.getString("password"));
+                return a;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
     }
 }

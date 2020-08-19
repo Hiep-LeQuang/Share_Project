@@ -27,7 +27,7 @@ import javafx.collections.ObservableList;
 public class Car {
 
     private ObjectProperty<Integer> carID;
-    private StringProperty sku;
+    private StringProperty seri;
     private StringProperty carName;
     private StringProperty brand;
     private StringProperty category;
@@ -47,7 +47,7 @@ public class Car {
         brandID = new SimpleObjectProperty<>(null);
         categoryID = new SimpleObjectProperty<>(null);
         colorID = new SimpleObjectProperty<>(null);
-        sku = new SimpleStringProperty();
+        seri = new SimpleStringProperty();
         carName = new SimpleStringProperty();
         brand = new SimpleStringProperty();
         category = new SimpleStringProperty();
@@ -76,8 +76,8 @@ public class Car {
         return colorID.get();
     }
     
-    public String getSku() {
-        return sku.get();
+    public String getSeri() {
+        return seri.get();
     }
 
     public String getCarName() {
@@ -136,8 +136,8 @@ public class Car {
         this.colorID.set(colorID);
     }
 
-    public void setSku(String sku) {
-        this.sku.set(sku);
+    public void setSeri(String seri) {
+        this.seri.set(seri);
     }
 
     public void setCarName(String carName) {
@@ -196,8 +196,8 @@ public class Car {
         return this.colorID;
     }
 
-    public StringProperty getCarSkuProperty() {
-        return this.sku;
+    public StringProperty getSeriProperty() {
+        return this.seri;
     }
 
     public StringProperty getCarNameProperty() {
@@ -246,12 +246,12 @@ public class Car {
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID ");) {
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.seri,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID ");) {
 
             while (rs.next()) {
                 Car b = new Car();
                 b.setCarID(rs.getInt("carID"));
-                b.setSku(rs.getString("sku"));
+                b.setSeri(rs.getString("seri"));
                 b.setCarName(rs.getString("carName"));
                 b.setBrand(rs.getString("brand"));
                 b.setCategory(rs.getString("categoryName"));
@@ -286,12 +286,12 @@ public class Car {
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND category.categoryName = 'Xe Con';");) {
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.seri,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND category.categoryName = 'Xe Con';");) {
 
             while (rs.next()) {
                 Car b = new Car();
                 b.setCarID(rs.getInt("carID"));
-                b.setSku(rs.getString("sku"));
+                b.setSeri(rs.getString("seri"));
                 b.setCarName(rs.getString("carName"));
                 b.setBrand(rs.getString("brand"));
                 b.setCategory(rs.getString("categoryName"));
@@ -325,12 +325,12 @@ public class Car {
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND category.categoryName = 'Bán Tải';");) {
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.seri,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND category.categoryName = 'Bán Tải';");) {
 
             while (rs.next()) {
                 Car b = new Car();
                 b.setCarID(rs.getInt("carID"));
-                b.setSku(rs.getString("sku"));
+                b.setSeri(rs.getString("seri"));
                 b.setCarName(rs.getString("carName"));
                 b.setBrand(rs.getString("brand"));
                 b.setCategory(rs.getString("categoryName"));
@@ -359,14 +359,14 @@ public class Car {
     }
 
     public static Car insert(Car newCar) throws SQLException {
-        String sql = "INSERT INTO car ( sku, carName, yearOfManufacture, price, seat, fuelUsed, gear, status, brandID, categoryID, colorID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO car ( seri, carName, yearOfManufacture, price, seat, fuelUsed, gear, status, brandID, categoryID, colorID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         ResultSet key = null;
         try (
                 Connection conn = DbService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 
-            stmt.setString(1, newCar.getSku());
+            stmt.setString(1, newCar.getSeri());
             stmt.setString(2, newCar.getCarName());
             stmt.setInt(3, newCar.getYearOfManufacture());
             stmt.setInt(4, newCar.getPrice());
@@ -417,13 +417,13 @@ public class Car {
 
     public static boolean update(Car updateCar) {
         String sql = "UPDATE car SET "
-                + "sku = ?, carName = ?, yearOfManufacture = ?, price = ?, seat = ?, fuelUsed = ?, gear = ?, status = ?, brandID = ?, categoryID = ?, colorID = ? WHERE car.carID = ?";
+                + "seri = ?, carName = ?, yearOfManufacture = ?, price = ?, seat = ?, fuelUsed = ?, gear = ?, status = ?, brandID = ?, categoryID = ?, colorID = ? WHERE car.carID = ?";
         System.out.println(updateCar);
         try (
                 Connection conn = DbService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);) {
 
-            stmt.setString(1, updateCar.getSku());
+            stmt.setString(1, updateCar.getSeri());
             stmt.setString(2, updateCar.getCarName());
             stmt.setInt(3, updateCar.getYearOfManufacture());
             stmt.setInt(4, updateCar.getPrice());
@@ -508,5 +508,20 @@ public class Car {
             ex.printStackTrace();
             return 0;
         }
+    }
+    
+    public static boolean checkSeri(String seri){
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Car Where seri = '"+ seri +"'");){
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
     }
 }

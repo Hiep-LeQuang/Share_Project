@@ -165,4 +165,19 @@ public class Brand {
             return false;
         }
     }
+    
+    public static boolean checkBrand(String brand){
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Brand Where brand = '"+ brand +"'");){
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
 }

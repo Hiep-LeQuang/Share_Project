@@ -29,11 +29,6 @@ public class BrandController {
     private TableColumn<Brand, String> tcStatus;
 
     @FXML
-    void btnCancel(ActionEvent event) {
-        System.exit(0);
-    }
-
-    @FXML
     void btnCreate(ActionEvent event) throws IOException {
         Navigator.getInstance().goToCreateBrand(null);
     }

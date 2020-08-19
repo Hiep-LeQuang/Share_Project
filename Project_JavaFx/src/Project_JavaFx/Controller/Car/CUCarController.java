@@ -60,7 +60,7 @@ public class CUCarController {
     private TextField txtYear;
 
     @FXML
-    private TextField txtSku;
+    private TextField txtSeri;
 
     @FXML
     private ComboBox<String> cbxSeat;
@@ -117,7 +117,7 @@ public class CUCarController {
     }
 
     @FXML
-    void txtSku(ActionEvent event) {
+    void txtSeri(ActionEvent event) {
 
     }
 
@@ -133,59 +133,63 @@ public class CUCarController {
 
     @FXML
     void btnSave(ActionEvent event) throws IOException, SQLException {
-        if (editCar == null) {
-            Car insertCar = extractCarFromFields();
-            insertCar = Car.insert(insertCar);
-            Navigator.getInstance().goToMain();
-        } else {
-            Car updateCar = extractCarFromFields();
-            updateCar.setCarID(this.editCar.getCarID());
-            
-            boolean result = Car.update(updateCar);
-            Alert alert = new Alert(Alert.AlertType.NONE);
-            if (result) {
-                alert.setHeaderText("Cập nhật thương hiệu thành công");
+        if (validation()) {
+            if (editCar == null) {
+                Car insertCar = extractCarFromFields();
+                insertCar = Car.insert(insertCar);
+                Navigator.getInstance().goToMain();
             } else {
-                alert.setHeaderText("Cập nhật thương hiệu không thành công");
+                Car updateCar = extractCarFromFields();
+                updateCar.setCarID(this.editCar.getCarID());
+
+                boolean result = Car.update(updateCar);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                if (result) {
+                    alert.setHeaderText("Cập nhật thông tin xe thành công");
+                    alert.show();
+                } else {
+                    alert.setHeaderText("Cập nhật thông tin xe không thành công");
+                    alert.show();
+                }
+                Navigator.getInstance().goToMain();
             }
-            Navigator.getInstance().goToMain();
         }
     }
 
     private Car extractCarFromFields() {
         Car car = new Car();
-        car.setSku(txtSku.getText());
+        car.setSeri(txtSeri.getText());
         car.setCarName(txtCarName.getText());
         car.setYearOfManufacture(Integer.parseInt(txtYear.getText()));
         car.setPrice(Integer.parseInt(txtPrice.getText()));
         car.setSeat(cbxSeat.getSelectionModel().getSelectedItem());
         car.setFuelUsed(cbxFuel.getSelectionModel().getSelectedItem());
         car.setStatus(cbxStatus.getSelectionModel().getSelectedItem());
-        
+
         String brand = cbxBrand.getSelectionModel().getSelectedItem();
-        if(Car.getBrandID(brand) != 0){
+        if (Car.getBrandID(brand) != 0) {
             car.setBrandID(Car.getBrandID(brand));
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Khong co thuong hieu!");
-            
+
         }
-        
+
         String categoryName = cbxCategory.getSelectionModel().getSelectedItem();
-        if(Car.getCategoryID(categoryName) != 0){
+        if (Car.getCategoryID(categoryName) != 0) {
             car.setCategoryID(Car.getCategoryID(categoryName));
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Khong co loai san pham!");
-            
+
         }
-        
+
         String color = cbxColor.getSelectionModel().getSelectedItem();
-        if(Car.getColorID(color) != 0){
+        if (Car.getColorID(color) != 0) {
             car.setColorID(Car.getColorID(color));
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Khong co mau!");
-            
+
         }
-        
+
         car.setGear(cbxGear.getSelectionModel().getSelectedItem());
         return car;
     }
@@ -220,16 +224,16 @@ public class CUCarController {
             cbxGear.getItems().add("Tự động vô cấp");
             cbxGear.getItems().add("Ly hợp kép");
 
-            txtSku.setText(editCar.getSku());
+            txtSeri.setText(editCar.getSeri());
             txtCarName.setText(editCar.getCarName());
             txtYear.setText(editCar.getYearOfManufacture().toString());
             txtPrice.setText(editCar.getPrice().toString());
             cbxBrand.getSelectionModel().select(editCar.getBrand());
-            
+
             cbxCategory.getSelectionModel().select(editCar.getCategory());
-            
+
             cbxColor.getSelectionModel().select(editCar.getColor());
-            
+
             if (editCar.getStatus().equals("Đang Bán")) {
                 cbxStatus.getSelectionModel().select("Đang Bán");
             } else {
@@ -244,23 +248,23 @@ public class CUCarController {
 
             if (editCar.getSeat().equals("2")) {
                 cbxSeat.getSelectionModel().select("2");
-            }else if(editCar.getSeat().equals("5")) {
+            } else if (editCar.getSeat().equals("5")) {
                 cbxSeat.getSelectionModel().select("5");
-            }else{
+            } else {
                 cbxSeat.getSelectionModel().select("7");
-                    }
+            }
 
             if (editCar.getGear().equals("Số sàn/Số tay")) {
                 cbxGear.getSelectionModel().select("Hộp số sàn/Số tay");
-            } else if(editCar.getGear().equals("Tự động")) {
+            } else if (editCar.getGear().equals("Tự động")) {
                 cbxGear.getSelectionModel().select("Tự động vô cấp");
-            } else if(editCar.getGear().equals("Tự động vô cấp")) {
+            } else if (editCar.getGear().equals("Tự động vô cấp")) {
                 cbxGear.getSelectionModel().select("Tự động");
             } else {
                 cbxGear.getSelectionModel().select("Ly hợp kép");
             }
         }
-            
+
         try (Connection connection = DbService.getConnection()) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from brand");
@@ -291,55 +295,65 @@ public class CUCarController {
             e.getStackTrace();
         }
     }
-    
 
-private boolean validation() {
+    private boolean validation() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        if(txtCarName.getText().equals("") || txtPrice.getText().equals("") || txtSku.getText().equals("") || txtYear.getText().equals("")){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Không được để trống");
-            alert.show();
-            return false;
-        }
-        if(txtCarName.getText().length() > 50 || txtCarName.getText().length() < 1){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-            alert.show();
-            return false;
-        }
-        
-        if(txtPrice.getText().length() > 50 || txtPrice.getText().length() < 1){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-            alert.show();
-            return false;
-        }
-        
-        if(txtSku.getText().length() > 50 || txtSku.getText().length() < 1){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-            alert.show();
-            return false;
-        }
-        
-        if(txtYear.getText().length() > 50 || txtYear.getText().length() < 1){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-            alert.show();
-            return false;
+        String msg = "";
+
+        if (txtCarName.getText().isEmpty() || txtPrice.getText().isEmpty() || txtSeri.getText().isEmpty() || txtYear.getText().isEmpty() || cbxBrand.getSelectionModel().isEmpty() || cbxCategory.getSelectionModel().isEmpty() || cbxColor.getSelectionModel().isEmpty() || cbxFuel.getSelectionModel().isEmpty() || cbxGear.getSelectionModel().isEmpty() || cbxSeat.getSelectionModel().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
+            msg = "Không được để trống";
+        } else {
+            String name = txtCarName.getText();
+            String price = txtPrice.getText();
+            String seri = txtSeri.getText();
+            String year = txtYear.getText();
+
+            String regex = "[0-9]{1,10}";
+            if (!Pattern.matches(regex, price)) {
+                msg += "Giá sản phẩm chỉ gồm các số từ 0-9 và không dài quá 10 kí tự" + "\n";
+            } else {
+                if (Integer.parseInt(txtPrice.getText()) > 500000) {
+                    msg += "Giá xe nhập không vượt quá 500000 $" + "\n";
+                }
+            }
+
+            String regex1 = "[a-zA-ZÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ0-9 ]{1,}";
+            if (!Pattern.matches(regex1, name)) {
+                msg += "Tên xe hàng chỉ gồm các ký tự a-z, A-Z" + "\n";
+            }
+            if (!Pattern.matches(regex, year)) {
+                msg += "Năm sản xuất gồm các số từ 0-9" + "\n";
+            } else {
+                if (1900 > Integer.parseInt(txtYear.getText()) || Integer.parseInt(txtYear.getText()) > 2020) {
+                    msg += "Năm sản xuất phải từ năm 1900 trở lại đây" + "\n";
+                }
+            }
+
+            String regex2 = "[a-zA-Z0-9]{1,}";
+            if (!Pattern.matches(regex2, seri)) {
+                msg += "Seri xe chỉ gồm các kí tự từ 1-z, A-Z, 0-9 " + "\n";
+            }
+
+            if (Car.checkSeri(txtSeri.getText())) {
+                msg += "Seri xe nhập đã tồn tại, vui lòng kiểm tra lại" + "\n";
+            }
+
+            if (txtCarName.getText().length() > 50) {
+                msg += "Tên xe nhập không vượt quá 50 kí tự" + "\n";
+            }
+
+            if (txtSeri.getText().length() > 17) {
+                msg += "Seri xe nhập không vượt quá 30 kí tự" + "\n";
+            }
+
         }
 
-        String name = txtCarName.getText();
-        String price = txtPrice.getText();
-        String sku = txtSku.getText();
-        String year = txtYear.getText();
-        String regex = "[a-zA-Z0-9_@]{6,}";
-        if(!Pattern.matches(regex, name) || !Pattern.matches(regex, price) || !Pattern.matches(regex, sku) || !Pattern.matches(regex, year)){
+        if (!msg.isEmpty()) {
             alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
+            alert.setHeaderText(msg);
             alert.show();
             return false;
         }
-        
         return true;
-    }}
+    }
+}

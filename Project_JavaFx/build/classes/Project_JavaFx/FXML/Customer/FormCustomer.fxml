@@ -38,7 +38,7 @@
                         <Insets right="50.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Hợp Đồng" />
+                  <Button mnemonicParsing="false" onAction="#btnContract" prefHeight="30.0" prefWidth="80.0" text="Hợp Đồng" />
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" />
@@ -46,21 +46,24 @@
             </HBox>
             <TableView fx:id="tvCustomer" prefHeight="458.0" prefWidth="1134.0">
                <columns>
-                  <TableColumn fx:id="tcName" prefWidth="271.0" text="Tên Khách Hàng" />
-                  <TableColumn fx:id="tcphone" prefWidth="258.0" text="Số Điện Thoại" />
-                  <TableColumn fx:id="tcAddress" prefWidth="315.0" text="Địa Chỉ" />
-                  <TableColumn fx:id="tcEmail" prefWidth="289.0" text="Email" />
+                  <TableColumn fx:id="tcName" prefWidth="233.0" text="Tên Khách Hàng" />
+                  <TableColumn fx:id="tcCmnd" prefWidth="202.0" text="CMND" />
+                  <TableColumn fx:id="tcphone" prefWidth="204.0" text="Số Điện Thoại" />
+                  <TableColumn fx:id="tcAddress" prefWidth="285.0" text="Địa Chỉ" />
+                  <TableColumn fx:id="tcEmail" prefWidth="209.0" text="Email" />
                </columns>
             </TableView>
             <HBox alignment="CENTER" prefHeight="57.0" prefWidth="1134.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnCreate" prefHeight="25.0" prefWidth="73.0" text="Thêm" />
-                  <Button mnemonicParsing="false" onAction="#btnUpdate" prefHeight="25.0" prefWidth="68.0" text="Sửa">
+                  <Button mnemonicParsing="false" onAction="#btnCreate" prefHeight="32.0" prefWidth="79.0" text="Thêm">
+                     <HBox.margin>
+                        <Insets left="50.0" right="30.0" />
+                     </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onAction="#btnUpdate" prefHeight="33.0" prefWidth="77.0" text="Sửa">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnCancel" prefHeight="25.0" prefWidth="72.0" text="Thoát" />
                </children>
             </HBox>
          </children>

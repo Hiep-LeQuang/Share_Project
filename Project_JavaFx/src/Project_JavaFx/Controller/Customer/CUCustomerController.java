@@ -8,8 +8,6 @@ package Project_JavaFx.Controller.Customer;
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +24,9 @@ public class CUCustomerController {
 
     @FXML
     private TextField txtName;
+
+    @FXML
+    private TextField txtCmnd;
 
     @FXML
     private TextField txtPhone;
@@ -46,20 +47,52 @@ public class CUCustomerController {
         if (validation()) {
             if (editCustomer == null) {
                 Customer insertCustomer = extractCustomerFromFields();
-                insertCustomer = Customer.insert(insertCustomer);
-                Navigator.getInstance().goToMain();
+
+                if (Customer.getCustomer(insertCustomer.getCmnd()) == null) {
+                    insertCustomer = Customer.insert(insertCustomer);
+                    Navigator.getInstance().goToMain();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Chứng minh nhân dân hoặc thẻ căn cước đã tồn tại");
+                    alert.show();
+                }
+
             } else {
                 Customer updateCustomer = extractCustomerFromFields();
                 updateCustomer.setCustomerID(this.editCustomer.getCustomerID());
 
-                boolean result = Customer.update(updateCustomer);
-                Alert alert = new Alert(Alert.AlertType.NONE);
-                if (result) {
-                    alert.setHeaderText("Cập nhật khách hàng thành công");
+                if (!updateCustomer.getCmnd().equals(editCustomer.getCmnd())) {
+                    if (Customer.getCustomer(updateCustomer.getCmnd()) == null) {
+                        boolean result = Customer.update(updateCustomer);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        if (result) {
+                            alert.setHeaderText("Cập nhật khách hàng thành công");
+                            alert.show();
+                        } else {
+                            alert.setHeaderText("Cập nhật khách hàng không thành công");
+                            alert.show();
+                        }
+                        Navigator.getInstance().goToMain();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Chứng minh nhân dân hoặc thẻ căn cước đã tồn tại");
+                        alert.show();
+                    }
+
                 } else {
-                    alert.setHeaderText("Cập nhật khách hàng không thành công");
+                    boolean result = Customer.update(updateCustomer);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    if (result) {
+                        alert.setHeaderText("Cập nhật khách hàng thành công");
+                        alert.show();
+                    } else {
+                        alert.setHeaderText("Cập nhật khách hàng không thành công");
+                        alert.show();
+                    }
+                    Navigator.getInstance().goToMain();
+
                 }
-                Navigator.getInstance().goToMain();
+
             }
         }
     }
@@ -80,6 +113,11 @@ public class CUCustomerController {
     }
 
     @FXML
+    void txtCmnd(ActionEvent event) {
+
+    }
+
+    @FXML
     void txtPhone(ActionEvent event) {
 
     }
@@ -87,6 +125,7 @@ public class CUCustomerController {
     private Customer extractCustomerFromFields() {
         Customer customer = new Customer();
         customer.setCustomerName(txtName.getText());
+        customer.setCmnd(txtCmnd.getText());
         customer.setPhone(txtPhone.getText());
         customer.setAddress(txtAddress.getText());
         customer.setEmail(txtEmail.getText());
@@ -101,71 +140,81 @@ public class CUCustomerController {
         } else {
             msg = "Chỉnh sửa thông tin khách hàng";
             txtName.setText(editCustomer.getCustomerName());
+            txtCmnd.setText(editCustomer.getCmnd());
             txtPhone.setText(editCustomer.getPhone());
             txtAddress.setText(editCustomer.getAddress());
             txtEmail.setText(editCustomer.getEmail());
         }
     }
-//    List<String> error = new ArrayList<>();
-    String mgs = "";
-    String mgs1 = "";
-    String mgs2 = "";
-    String mgs3 = "";
 
     private boolean validation() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        if (txtName.getText().isEmpty() || txtPhone.getText().isEmpty() || txtAddress.getText().isEmpty() || txtEmail.getText().isEmpty()) {
-//            alert.setTitle("Cảnh báo đăng nhập");
-//            alert.setHeaderText("Không được để trống");
-//            alert.show();
-//            return false;
-            mgs = "Không được để trống";
-        }
-        if (txtName.getText().length() > 50 || txtName.getText().length() < 1) {
-//            alert.setTitle("Cảnh báo đăng nhập");
-//            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-//            alert.show();
-//            return false;
-            mgs1 = "Phân loại nhập không vượt quá 30 kí tự";
+        String msg = "";
+        if (txtName.getText().isEmpty() || txtCmnd.getText().isEmpty() || txtPhone.getText().isEmpty() || txtAddress.getText().isEmpty() || txtEmail.getText().isEmpty()) {
+            msg = "Không được để trống";
+        } else {
+
+            if (txtCmnd.getText().length() != 12) {
+
+                msg += "Số chứng minh thư hoặc căn cước công dân nhập phải 12 số" + "\n";
+            }
+
+            if (txtName.getText().length() > 50) {
+
+                msg += "Tên khách hàng nhập không vượt quá 50 kí tự" + "\n";
+            }
+
+            if (txtPhone.getText().length() != 10) {
+
+                msg += "Số điện thoại nhập phải 10 số" + "\n";
+            }
+
+            if (txtAddress.getText().length() > 100) {
+
+                msg += "Địa chỉ nhập không vượt quá 100 kí tự" + "\n";
+            }
+
+            if (txtEmail.getText().length() > 50) {
+                msg += "Email nhập không vượt quá 50 kí tự" + "\n";
+            }
+
+            String cmnd = txtCmnd.getText();
+            String name = txtName.getText();
+            String phone = txtPhone.getText();
+            String address = txtAddress.getText();
+            String email = txtEmail.getText();
+
+            String regex = "[0-9]{1,}";
+            if (!Pattern.matches(regex, cmnd)) {
+                msg += "Số chứng minh thư hoặc căn cước công dân chỉ gồm các số từ 0-9" + "\n";
+            }
+
+            if (!Pattern.matches(regex, phone)) {
+                msg += "Số điện thoại chỉ gồm các số từ 0-9" + "\n";
+            }
+
+            String regex1 = "[a-zA-ZÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ ]{1,50}";
+            if (!Pattern.matches(regex1, name)) {
+                msg += "Tên khách hàng chỉ gồm các ký tự a-z, A-Z" + "\n";
+            }
+
+            String regex2 = "[a-zA-ZÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ0-9_@ ]{1,}";
+            if (!Pattern.matches(regex2, address)) {
+                msg += "Địa chỉ gồm các ký tự a-z, A-Z, 0-9, _, @" + "\n";
+            }
+
+            String regex3 = "[a-z][a-z0-9_\\.]{1,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}";
+            if (!Pattern.matches(regex3, email)) {
+                msg += "Email chỉ gồm các ký tự a-z, A-Z, 0-9, _, @, .  Ví dụ : abc@gmail.com" + "\n";
+            }
         }
 
-        if (txtPhone.getText().length() > 50 || txtPhone.getText().length() < 1) {
-//            alert.setTitle("Cảnh báo đăng nhập");
-//            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-//            alert.show();
-//            return false;
-            mgs2 = "Số điện thoại nhập không vượt quá 10 kí tự";
+        if (!msg.isEmpty()) {
+            alert.setTitle("Cảnh báo đăng nhập");
+            alert.setHeaderText(msg);
+            alert.show();
+            return false;
         }
-
-        if (txtAddress.getText().length() > 50 || txtAddress.getText().length() < 1) {
-//            alert.setTitle("Cảnh báo đăng nhập");
-//            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-//            alert.show();
-//            return false;
-            mgs3 = "Số điện thoại nhập không vượt quá 10 kí tự";
-        }
-//
-        alert.setTitle("Cảnh báo đăng nhập");
-        alert.setHeaderText(mgs + "\n" + mgs1 + "\n" + mgs2 + "\n" + mgs3);
-        alert.show();
-
-//        if (txtEmail.getText().length() > 50 || txtEmail.getText().length() < 1) {
-//            alert.setTitle("Cảnh báo đăng nhập");
-//            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-//            alert.show();
-//            return false;
-//        }
-//        String name = txtName.getText();
-//        String phone = txtPhone.getText();
-//        String address = txtAddress.getText();
-//        String email = txtEmail.getText();
-//        String regex = "[a-zA-Z0-9_@]";
-//        if (!Pattern.matches(regex, name) || !Pattern.matches(regex, address) || !Pattern.matches(regex, email)) {
-//            alert.setTitle("Cảnh báo đăng nhập");
-//            alert.setHeaderText("Thiing tin chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
-//            alert.show();
-//            return false;
-//        }
         return true;
     }
 }

@@ -16,8 +16,7 @@
             <TableColumn fx:id="tcPass" prefWidth="563.0" text="Mật Khẩu" />
          </columns>
       </TableView>
-      <Button layoutX="436.0" layoutY="474.0" mnemonicParsing="false" onAction="#btnDelete" prefHeight="41.0" prefWidth="113.0" text="Xóa" />
-      <Button layoutX="618.0" layoutY="474.0" mnemonicParsing="false" onAction="#btnCancel" prefHeight="41.0" prefWidth="113.0" text="Thoát" />
+      <Button layoutX="627.0" layoutY="474.0" mnemonicParsing="false" onAction="#btnDelete" prefHeight="41.0" prefWidth="113.0" text="Xóa" />
       <Button alignment="CENTER" layoutX="855.0" layoutY="1.0" mnemonicParsing="false" onAction="#btnSearch" prefHeight="29.0" prefWidth="72.0" text="Tìm" textAlignment="CENTER" />
       <TextField layoutX="665.0" layoutY="-1.0" onAction="#txtSearch" prefHeight="30.0" prefWidth="192.0" />
       <Text layoutX="589.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm Kiếm">
@@ -25,5 +24,6 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Text>
+      <Button layoutX="421.0" layoutY="474.0" mnemonicParsing="false" onAction="#btnCUAccount" prefHeight="41.0" prefWidth="113.0" text="Thêm Tài Khoản" />
    </children>
 </Pane>

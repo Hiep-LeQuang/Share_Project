@@ -56,11 +56,13 @@ public class CUCategoryController {
                 updateCategory.setCategoryID(this.editCategory.getCategoryID());
 
                 boolean result = Category.update(updateCategory);
-                Alert alert = new Alert(Alert.AlertType.NONE);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 if (result) {
                     alert.setHeaderText("Cập nhật thương hiệu thành công");
+                    alert.show();
                 } else {
                     alert.setHeaderText("Cập nhật thương hiệu không thành công");
+                    alert.show();
                 }
                 Navigator.getInstance().goToMain();
             }
@@ -96,28 +98,31 @@ public class CUCategoryController {
 
     private boolean validation() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        if (txtCategory.getText().equals("") || cbxStatus.getSelectionModel().isEmpty()) {
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Không được để trống");
-            alert.show();
-            return false;
-        }
-        if (txtCategory.getText().length() > 50 || txtCategory.getText().length() < 1) {
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại nhập không vượt quá 30 kí tự");
-            alert.show();
-            return false;
+        String msg = "";
+        if (txtCategory.getText().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
+            msg += "Không được để trống";
+        } else {
+            if(Category.checkCategory(txtCategory.getText())){
+                msg += "Tên phân loại đã tồn tại, vui lòng kiểm tra lại" + "\n";
+            }
+            
+            if (txtCategory.getText().length() > 50) {
+                msg += "Phân loại nhập không vượt quá 50 kí tự" + "\n";
+            }
+
+            String categoryName = txtCategory.getText();
+            String regex = "[a-zA-ZÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ0-9_@ ]{1,}";
+            if (!Pattern.matches(regex, categoryName)) {
+                msg += "Phân loại chỉ gồm các ký tự a-z, A-Z, 0-9, _, @, " + "\n";
+            }
         }
 
-        String username = txtCategory.getText();
-        String regex = "[a-zA-Z0-9_@]{1, 50}";
-        if (!Pattern.matches(regex, username)) {
+        if (!msg.isEmpty()) {
             alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
+            alert.setHeaderText(msg);
             alert.show();
             return false;
         }
-
         return true;
     }
 

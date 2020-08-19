@@ -18,9 +18,11 @@ import Project_JavaFx.Controller.Category.Category;
 import Project_JavaFx.Controller.Brand.CUBrandController;
 import Project_JavaFx.Controller.Brand.Brand;
 import Project_JavaFx.Controller.Car.DetailsCarController;
+import Project_JavaFx.Controller.Contract.ContractController;
 import Project_JavaFx.Controller.Contract.DetailsContractController;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,6 +44,7 @@ public class Navigator {
     public static final String CREATE_ACCOUNT_FXML = "/Project_JavaFx/FXML/Account/FormCUAccount.fxml";
     public static final String CREATE_DETAILSCAR_FXML = "/Project_JavaFx/FXML/Car/FormDetailsCar.fxml";
     public static final String CREATE_DETAILSCONTRACT_FXML = "/Project_JavaFx/FXML/Contract/FormDetailsContract.fxml";
+    public static final String CONTRACT_FXML = "/Project_JavaFx/FXML/Contract/FormContract.fxml";
     
     private FXMLLoader loader;
     private Stage stage = null;
@@ -135,4 +138,9 @@ public class Navigator {
         ctr.initialize(contract);
     }
     
+    public void goToContract(List<Contract> contract) throws IOException, SQLException{
+        this.goTo(CONTRACT_FXML);
+        ContractController ctr = loader.getController();
+        ctr.initialize(contract);
+    }
 }

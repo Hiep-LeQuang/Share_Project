@@ -5,8 +5,11 @@
  */
 package Project_JavaFx.Controller.Login;
 
+import Project_JavaFx.Controller.Account.Account;
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +23,7 @@ import javafx.scene.control.TextField;
  * @author lehie
  */
 public class LoginController {
+
     @FXML
     private TextField txtName;
 
@@ -31,14 +35,6 @@ public class LoginController {
 
     @FXML
     private Button btnCancel;
-    
-     @FXML
-    private Hyperlink btnCUAccount;
-
-    @FXML
-    void btnCUAccount(ActionEvent event) throws IOException {
-        Navigator.getInstance().goToCreateAccount();
-    }
 
     @FXML
     void btnCancel(ActionEvent event) {
@@ -47,42 +43,69 @@ public class LoginController {
 
     @FXML
     void btnLogin(ActionEvent event) throws IOException {
-        if(validation()){
-            Navigator.getInstance().goToMain();
+        if (validation()) {
+            String name = txtName.getText();
+            String pass = txtPass.getText();
+
+            pass = cryptWithMD5(pass);
+
+            if (Account.checkAccount(name, pass) != null) {
+                Navigator.getInstance().goToMain();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Cảnh báo đăng nhập");
+                alert.setHeaderText("Tài khoản hoặc mật khẩu không chính xác, vuio lòng kiểm tra lại");
+                alert.show();
+            }
         }
-        
+
     }
-    
+
     private boolean validation() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        if(txtName.getText().equals("") || txtPass.getText().equals("")){
+        String msg = "";
+        if (txtName.getText().isEmpty() || txtPass.getText().isEmpty()) {
+            msg += "Không được để trống";
+        } else {
+            if (txtName.getText().length() > 30 || txtName.getText().length() < 1) {
+                msg += "Tài khoản nhập không vượt quá 30 kí tự" + "\n";
+            }
+            if (txtPass.getText().length() > 16 || txtPass.getText().length() < 8) {
+                msg += "Mật khẩu nhập có chiều dài từ 8 đến 16 kí tự" + "\n";
+
+            }
+            String username = txtName.getText();
+            String password = txtPass.getText();
+            String regex = "[a-zA-Z0-9_@]{1,}";
+            if (!Pattern.matches(regex, username) || !Pattern.matches(regex, password)) {
+                msg += "username và pasword chỉ gồm các ký tự a-z, A-Z, 0-9, _";
+            }
+        }
+        if (!msg.isEmpty()) {
             alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Không được để trống");
+            alert.setHeaderText(msg);
             alert.show();
             return false;
         }
-        if(txtName.getText().length() > 30 || txtName.getText().length() < 1){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Tài khoản nhập không vượt quá 30 kí tự");
-            alert.show();
-            return false;
-        }
-        if(txtPass.getText().length() > 16 || txtPass.getText().length() < 8){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Mật khẩu nhập có chiều dài từ 8 đến 16 kí tự");
-            alert.show();
-            return false;
-        }
-        String username = txtName.getText();
-        String password = txtPass.getText();
-        String regex = "[a-zA-Z0-9_@]{6,}";
-        if(!Pattern.matches(regex, username) || !Pattern.matches(regex, password)){
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("username và pasword chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
-            alert.show();
-            return false;
-        }
-        
         return true;
+    }
+
+    public String cryptWithMD5(String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] passBytes = pass.getBytes();
+            md.reset();
+            byte[] digested = md.digest(passBytes);
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < digested.length; i++) {
+                sb.append(Integer.toHexString(0xff & digested[i]));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            System.err.println(ex.getMessage());
+
+        }
+        return null;
+
     }
 }

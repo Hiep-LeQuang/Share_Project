@@ -135,4 +135,19 @@ public class Color {
             return false;
         }
     }
+    
+    public static boolean checkColor(String color){
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Color Where color = '"+ color +"'");){
+            
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
 }

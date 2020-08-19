@@ -83,21 +83,20 @@ public class MainController implements Initializable {
         secPane.getChildren().clear();
         Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/Project_JavaFx/FXML/Account/FormAccount.fxml"));
         secPane.getChildren().add(newLoadedPane);
+        flag = 7;
     }
 
     @FXML
     void btnLogOut(ActionEvent event) throws IOException {
         Navigator.getInstance().goToLogin();
     }
+    
 
     @FXML
     private Pane secPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (flag == 1) {
-
-        }
         switch (flag) {
             case 1:
                 secPane.getChildren().clear();
@@ -150,6 +149,15 @@ public class MainController implements Initializable {
                     secPane.getChildren().clear();
                     Pane newLoadedPane6 = FXMLLoader.load(getClass().getResource("/Project_JavaFx/FXML/Customer/FormCustomer.fxml"));
                     secPane.getChildren().add(newLoadedPane6);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+                break;
+            case 7:
+                try {
+                    secPane.getChildren().clear();
+                    Pane newLoadedPane7 = FXMLLoader.load(getClass().getResource("/Project_JavaFx/FXML/Account/FormAccount.fxml"));
+                    secPane.getChildren().add(newLoadedPane7);
                 } catch (Exception e) {
                     e.getStackTrace();
                 }

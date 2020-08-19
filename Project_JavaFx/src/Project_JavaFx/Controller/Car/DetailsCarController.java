@@ -36,7 +36,7 @@ public class DetailsCarController {
     private Text txtGear;
 
     @FXML
-    private Text txtSku;
+    private Text txtSeri;
 
     @FXML
     private Text txtSeat;
@@ -54,7 +54,7 @@ public class DetailsCarController {
     
     public void initialize(Car car) throws SQLException {
 
-            txtSku.setText(car.getSku());
+            txtSeri.setText(car.getSeri());
             txtCarName.setText(car.getCarName());
             txtYear.setText(car.getYearOfManufacture().toString());
             txtPrice.setText(car.getPrice().toString());

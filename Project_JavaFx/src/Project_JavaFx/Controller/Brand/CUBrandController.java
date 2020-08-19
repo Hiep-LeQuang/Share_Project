@@ -46,11 +46,13 @@ public class CUBrandController {
                 updateBrand.setBrandID(this.editBrand.getBrandID());
 
                 boolean result = Brand.update(updateBrand);
-                Alert alert = new Alert(Alert.AlertType.NONE);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 if (result) {
                     alert.setHeaderText("Cập nhật thương hiệu thành công");
+                    alert.show();
                 } else {
                     alert.setHeaderText("Cập nhật thương hiệu không thành công");
+                    alert.show();
                 }
                 Navigator.getInstance().goToMain();
             }
@@ -89,31 +91,33 @@ public class CUBrandController {
         }
     }
 
-    String mgs1 = "";
-    String mgs2 = "";
-    String mgs3 = "";
     private boolean validation() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
+        String msg = "";
         if (txtBrand.getText().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
-            mgs1 = "Không được để trống";
-            return false;
+            msg += "Không được để trống";
+        } else {
+            if(Brand.checkBrand(txtBrand.getText())){
+                msg += "Tên thương hiệu đã tồn tại,vui lòng kiểm tra lại";
+            }
+            
+            if (txtBrand.getText().length() > 50) {
+                msg += "Thương hiệu nhập không vượt quá 50 kí tự";
+            }
+
+            String brand = txtBrand.getText();
+            String regex = "[a-zA-Z0-9_@ ]{1,}";
+            if (!Pattern.matches(regex, brand)) {
+                msg += "Thương hiệu chỉ gồm các ký tự a-z, A-Z, 0-9, _, @";
+            }
         }
-        if (txtBrand.getText().length() > 50 || txtBrand.getText().length() < 1) {
+
+        if (!msg.isEmpty()) {
             alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Thương hiệu nhập không vượt quá 50 kí tự");
+            alert.setHeaderText(msg);
             alert.show();
             return false;
         }
-
-        String username = txtBrand.getText();
-        String regex = "[a-zA-Z0-9_@]{1, 50}";
-        if (!Pattern.matches(regex, username)) {
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Thương hiệu chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
-            alert.show();
-            return false;
-        }
-
         return true;
     }
 }

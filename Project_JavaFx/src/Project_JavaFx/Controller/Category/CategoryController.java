@@ -26,11 +26,6 @@ public class CategoryController {
     
     @FXML
     private TableColumn<Category, String> tcStatus;
-    
-    @FXML
-    void btnCancel(ActionEvent event) {
-        System.exit(0);
-    }
 
     @FXML
     void btnCreate(ActionEvent event) throws IOException {

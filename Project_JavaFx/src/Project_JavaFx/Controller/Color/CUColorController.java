@@ -42,11 +42,13 @@ public class CUColorController {
                 updateColor.setColorID(this.editColor.getColorID());
 
                 boolean result = Color.update(updateColor);
-                Alert alert = new Alert(Alert.AlertType.NONE);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 if (result) {
                     alert.setHeaderText("Cập nhật màu sắc thành công");
+                    alert.show();
                 } else {
                     alert.setHeaderText("Cập nhật màu sắc không thành công");
+                    alert.show();
                 }
                 Navigator.getInstance().goToMain();
             }
@@ -77,28 +79,30 @@ public class CUColorController {
 
     private boolean validation() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        if (txtColor.getText().equals("")) {
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Không được để trống");
-            alert.show();
-            return false;
-        }
-        if (txtColor.getText().length() > 50 || txtColor.getText().length() < 1) {
-            alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại nhập không vượt quá 50 kí tự");
-            alert.show();
-            return false;
-        }
+        String msg = "";
+        if (txtColor.getText().isEmpty()) {
+            msg += "Không được để trống";
+        } else {
+            if(Color.checkColor(txtColor.getText())){
+                msg = "Màu sắc nhập đã tồn tại, vui lòng kiểm tra lại" + "\n";
+            }
+            
+            if (txtColor.getText().length() > 50) {
+                msg = "Màu sắc nhập không vượt quá 50 kí tự" + "\n";
+            }
 
-        String username = txtColor.getText();
-        String regex = "[a-zA-Z0-9_@]{1, 50}";
-        if (!Pattern.matches(regex, username)) {
+            String color = txtColor.getText();
+            String regex = "[a-zA-ZÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ ]{1,50}";
+            if (!Pattern.matches(regex, color)) {
+                msg += "Màu xe chỉ gồm các ký tự a-z, A-Z" + "\n";
+            }
+        }
+        if (!msg.isEmpty()) {
             alert.setTitle("Cảnh báo đăng nhập");
-            alert.setHeaderText("Phân loại chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
+            alert.setHeaderText(msg);
             alert.show();
             return false;
         }
-
         return true;
     }
 }

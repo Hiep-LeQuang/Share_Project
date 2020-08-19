@@ -55,7 +55,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Text layoutX="290.0" layoutY="495.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kê Toán" textAlignment="CENTER">
+      <Text layoutX="757.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kê Toán" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -71,13 +71,8 @@
          </font>
       </Text>
       <TextField fx:id="txtCustomer" layoutX="399.0" layoutY="233.0" onAction="#txtCustomer" prefHeight="33.0" prefWidth="215.0" />
-      <TextField fx:id="txtPhone" layoutX="397.0" layoutY="295.0" onAction="#txtPhone" prefHeight="33.0" prefWidth="215.0" />
+      <TextField fx:id="txtPhone" layoutX="397.0" layoutY="357.0" onAction="#txtPhone" prefHeight="33.0" prefWidth="215.0" />
       <TextField fx:id="txtPrice" layoutX="857.0" layoutY="295.0" onAction="#txtPrice" prefHeight="33.0" prefWidth="215.0" />
-      <Text layoutX="710.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Bán Xe" wrappingWidth="132.00000822544098">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
       <Text layoutX="674.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Nhận Hàng" wrappingWidth="170.3964819908142">
          <font>
             <Font size="20.0" />
@@ -94,8 +89,8 @@
             <Image url="@../Picture/contract.png" />
          </image>
       </ImageView>
-      <TextField fx:id="txtEmail" layoutX="397.0" layoutY="413.0" onAction="#txtEmail" prefHeight="33.0" prefWidth="215.0" />
-      <Text layoutX="261.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" textAlignment="CENTER" wrappingWidth="132.00000822544098">
+      <TextField fx:id="txtEmail" layoutX="397.0" layoutY="471.0" onAction="#txtEmail" prefHeight="33.0" prefWidth="215.0" />
+      <Text layoutX="249.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" textAlignment="CENTER" wrappingWidth="132.00000822544098">
          <font>
             <Font size="20.0" />
          </font>
@@ -109,14 +104,14 @@
             </ImageView>
          </graphic>
       </Button>
-      <TextField fx:id="txtAddress" layoutX="397.0" layoutY="357.0" onAction="#txtAddress" prefHeight="33.0" prefWidth="215.0" />
-      <TextField fx:id="txtAccountant" layoutX="399.0" layoutY="471.0" onAction="#txtAccountant" prefHeight="33.0" prefWidth="215.0" />
-      <Text layoutX="249.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" textAlignment="CENTER" wrappingWidth="132.00000822544098">
+      <TextField fx:id="txtAddress" layoutX="397.0" layoutY="416.0" onAction="#txtAddress" prefHeight="33.0" prefWidth="215.0" />
+      <TextField fx:id="txtAccountant" layoutX="857.0" layoutY="135.0" onAction="#txtAccountant" prefHeight="33.0" prefWidth="215.0" />
+      <Text layoutX="249.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" textAlignment="CENTER" wrappingWidth="132.00000822544098">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text layoutX="261.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" textAlignment="CENTER" wrappingWidth="132.00000822544098">
+      <Text layoutX="249.0" layoutY="495.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" textAlignment="CENTER" wrappingWidth="132.00000822544098">
          <font>
             <Font size="20.0" />
          </font>
@@ -138,9 +133,14 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox fx:id="cbxSku" layoutX="397.0" layoutY="125.0" onAction="#cbxSku" prefHeight="33.0" prefWidth="215.0" />
+      <ComboBox fx:id="cbxSeri" layoutX="397.0" layoutY="125.0" onAction="#cbxSeri" prefHeight="33.0" prefWidth="215.0" />
       <TextField fx:id="txtNameCar" layoutX="399.0" layoutY="177.0" onAction="#txtNameCar" prefHeight="33.0" prefWidth="215.0" />
       <DatePicker fx:id="txtRD" layoutX="857.0" layoutY="181.0" onAction="#txtRD" prefHeight="33.0" prefWidth="215.0" />
-      <DatePicker fx:id="txtDos" layoutX="857.0" layoutY="121.0" onAction="#txtDos" prefHeight="33.0" prefWidth="215.0" />
+      <Text layoutX="315.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CMND">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtCmnd" layoutX="395.0" layoutY="295.0" onAction="#txtCmnd" prefHeight="33.0" prefWidth="215.0" />
    </children>
 </AnchorPane>
