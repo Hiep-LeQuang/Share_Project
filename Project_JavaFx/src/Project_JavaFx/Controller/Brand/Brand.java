@@ -180,4 +180,31 @@ public class Brand {
         }
         return false;
     }
+    
+    public static ObservableList<Brand> selectBrand(String brand){
+        ObservableList<Brand> brands = FXCollections.observableArrayList();
+            
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM brand Where brand like '%" +brand + "%'");){
+            
+            while (rs.next()) {
+                Brand b = new Brand();
+                b.setBrandID(rs.getInt("brandID"));
+                b.setBrand(rs.getString("brand"));
+                if(rs.getInt("status") == 0){
+                     b.setStatus("Ngừng Kinh Doanh");
+                } else{
+                    b.setStatus("Đang Kinh Doanh");
+                }
+                
+                brands.add(b);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return brands;
+    }
 }

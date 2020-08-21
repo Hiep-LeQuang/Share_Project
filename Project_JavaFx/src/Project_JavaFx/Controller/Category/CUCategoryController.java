@@ -55,16 +55,38 @@ public class CUCategoryController {
                 Category updateCategory = extractCategoryFromFields();
                 updateCategory.setCategoryID(this.editCategory.getCategoryID());
 
-                boolean result = Category.update(updateCategory);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                if (result) {
-                    alert.setHeaderText("Cập nhật thương hiệu thành công");
-                    alert.show();
+                if (!updateCategory.getCategory().equals(editCategory.getCategory())) {
+                    if (!Category.checkCategory(updateCategory.getCategory())) {
+                        boolean result = Category.update(updateCategory);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        if (result) {
+                            alert.setHeaderText("Cập nhật phân loại thành công");
+                            alert.show();
+                        } else {
+                            alert.setHeaderText("Cập nhật phân loại không thành công");
+                            alert.show();
+                        }
+                        Navigator.getInstance().goToMain();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Phân loại đã tồn tại, vui lòng kiểm tra lại");
+                        alert.show();
+                    }
+
                 } else {
-                    alert.setHeaderText("Cập nhật thương hiệu không thành công");
-                    alert.show();
+                    boolean result = Category.update(updateCategory);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    if (result) {
+                        alert.setHeaderText("Cập nhật phân loại thành công");
+                        alert.show();
+                    } else {
+                        alert.setHeaderText("Cập nhật phân loại không thành công");
+                        alert.show();
+                    }
+                    Navigator.getInstance().goToMain();
+
                 }
-                Navigator.getInstance().goToMain();
+
             }
         }
     }
@@ -102,10 +124,7 @@ public class CUCategoryController {
         if (txtCategory.getText().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
             msg += "Không được để trống";
         } else {
-            if(Category.checkCategory(txtCategory.getText())){
-                msg += "Tên phân loại đã tồn tại, vui lòng kiểm tra lại" + "\n";
-            }
-            
+
             if (txtCategory.getText().length() > 50) {
                 msg += "Phân loại nhập không vượt quá 50 kí tự" + "\n";
             }

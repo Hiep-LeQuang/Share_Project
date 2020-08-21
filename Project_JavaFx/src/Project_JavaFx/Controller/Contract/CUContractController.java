@@ -66,7 +66,7 @@ public class CUContractController {
     private ComboBox<String> cbxStatus;
 
     @FXML
-    private ComboBox<String> cbxSeri;
+    private ComboBox<String> cbxSku;
 
     @FXML
     private TextField txtNameCar;
@@ -85,6 +85,8 @@ public class CUContractController {
 
                 if (Customer.getCustomer(txtCmnd.getText()) == null) {
                     insertCustomer = Customer.insert(insertCustomer);
+                }else{
+                    insertCustomer = Customer.getCustomer(txtCmnd.getText());
                 }
 
                 insertContract.setCustomerID(insertCustomer.getCustomerID());
@@ -156,11 +158,11 @@ public class CUContractController {
         contract.setAccountant(txtAccountant.getText());
         contract.setNote(txtNote.getText());
 
-        contract.setSeri(cbxSeri.getSelectionModel().getSelectedItem());
+        contract.setSku(cbxSku.getSelectionModel().getSelectedItem());
         contract.setStatus(cbxStatus.getSelectionModel().getSelectedItem());
 
-        String seri = cbxSeri.getSelectionModel().getSelectedItem();
-        if (contract.getSeri()!= null) {
+        String seri = cbxSku.getSelectionModel().getSelectedItem();
+        if (contract.getSku()!= null) {
             contract.setCarID(contract.getCarID(seri));
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Khong co xe!");
@@ -176,7 +178,7 @@ public class CUContractController {
     }
 
     @FXML
-    void cbxSeri(ActionEvent event) {
+    void cbxSku(ActionEvent event) {
 
     }
 
@@ -240,7 +242,7 @@ public class CUContractController {
 
             txtNameCar.setDisable(true);
 
-            cbxSeri.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            cbxSku.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 String seri = newValue;
                 String carName = Contract.getCar(seri);
                 txtNameCar.setText(carName);
@@ -267,11 +269,11 @@ public class CUContractController {
             txtRD.setValue(LocalDate.parse(editContract.getProductReceiptDate()));
             txtAccountant.setText(editContract.getAccountant());
             txtNote.setText(editContract.getNote());
-            cbxSeri.getSelectionModel().select(editContract.getSeri());
+            cbxSku.getSelectionModel().select(editContract.getSku());
             txtNameCar.setText(editContract.getCarName());
             txtNameCar.setDisable(true);
 
-            cbxSeri.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            cbxSku.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 String seri = newValue;
                 String carName = Contract.getCar(seri);
                 txtNameCar.setText(carName);
@@ -296,7 +298,7 @@ public class CUContractController {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from Car");
             while (rs.next()) {
-                cbxSeri.getItems().add(rs.getString("seri"));
+                cbxSku.getItems().add(rs.getString("seri"));
             }
         } catch (SQLException e) {
             e.getStackTrace();
@@ -307,7 +309,7 @@ public class CUContractController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         String msg = "";
 
-        if (txtAccountant.getText().isEmpty() || txtAddress.getText().equals("") || txtCmnd.getText().equals("") || txtCustomer.getText().equals("") || txtDeposits.getText().equals("") || txtEmail.getText().equals("") || txtNameCar.getText().equals("") || txtRD.getChronology().equals("") || txtPhone.getText().isEmpty() || txtPrice.getText().isEmpty() || cbxSeri.getSelectionModel().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
+        if (txtAccountant.getText().isEmpty() || txtAddress.getText().equals("") || txtCmnd.getText().equals("") || txtCustomer.getText().equals("") || txtDeposits.getText().equals("") || txtEmail.getText().equals("") || txtNameCar.getText().equals("") || txtRD.getValue() == null || txtPhone.getText().isEmpty() || txtPrice.getText().isEmpty() || cbxSku.getSelectionModel().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
             msg += "Không được để trống" + "\n";
         } else {
 
@@ -322,6 +324,7 @@ public class CUContractController {
             String email = txtEmail.getText();
 
             String regex = "[0-9]{1,10}";
+            String regex5 = "[0-9]{1,}";
 
             if (!Pattern.matches(regex, price)) {
                 msg += "Giá sản phẩm chỉ gồm các số từ 0-9 và dài không quá 10 kí tự" + "\n";
@@ -349,7 +352,7 @@ public class CUContractController {
                 }
             }
 
-            if (!Pattern.matches(regex, phone)) {
+            if (!Pattern.matches(regex5, phone)) {
                 msg += "Số điện thoại chỉ gồm các số từ 0-9" + "\n";
             } else {
                 if (txtPhone.getText().length() != 10) {
@@ -379,13 +382,9 @@ public class CUContractController {
 
             String regex2 = "[a-zA-Z0-9_@ÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ ]{1,}";
 
-            if (!Pattern.matches(regex2, note)) {
-                msg += "Ghi chú gồm các ký tự a-z, A-Z, 0-9, _, @, " + "\n";
-            } else {
                 if (txtNote.getText().length() > 255) {
                     msg += "Ghi chú nhập không vượt quá 255 kí tự" + "\n";
                 }
-            }
 
             if (!Pattern.matches(regex2, address)) {
                 msg += "Địa chỉ gồm các ký tự a-z, A-Z, 0-9, _, @" + "\n";

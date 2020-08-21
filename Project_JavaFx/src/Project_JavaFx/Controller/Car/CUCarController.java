@@ -60,7 +60,7 @@ public class CUCarController {
     private TextField txtYear;
 
     @FXML
-    private TextField txtSeri;
+    private TextField txtSku;
 
     @FXML
     private ComboBox<String> cbxSeat;
@@ -117,7 +117,7 @@ public class CUCarController {
     }
 
     @FXML
-    void txtSeri(ActionEvent event) {
+    void txtSku(ActionEvent event) {
 
     }
 
@@ -142,23 +142,46 @@ public class CUCarController {
                 Car updateCar = extractCarFromFields();
                 updateCar.setCarID(this.editCar.getCarID());
 
-                boolean result = Car.update(updateCar);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                if (result) {
-                    alert.setHeaderText("Cập nhật thông tin xe thành công");
-                    alert.show();
+                if (!updateCar.getSku().equals(editCar.getSku())) {
+
+                    if (!Car.checkSku(updateCar.getSku())) {
+                        boolean result = Car.update(updateCar);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        if (result) {
+                            alert.setHeaderText("Cập nhật thông tin xe thành công");
+                            alert.show();
+                        } else {
+                            alert.setHeaderText("Cập nhật thông tin xe không thành công");
+                            alert.show();
+                        }
+                        Navigator.getInstance().goToMain();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Sku xe đã tồn tại, vui lòng kiểm tra lại");
+                        alert.show();
+                    }
+
                 } else {
-                    alert.setHeaderText("Cập nhật thông tin xe không thành công");
-                    alert.show();
+                    boolean result = Car.update(updateCar);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    if (result) {
+                        alert.setHeaderText("Cập nhật thông tin xe thành công");
+                        alert.show();
+                    } else {
+                        alert.setHeaderText("Cập nhật thông tin xe không thành công");
+                        alert.show();
+                    }
+                    Navigator.getInstance().goToMain();
+
                 }
-                Navigator.getInstance().goToMain();
+
             }
         }
     }
 
     private Car extractCarFromFields() {
         Car car = new Car();
-        car.setSeri(txtSeri.getText());
+        car.setSku(txtSku.getText());
         car.setCarName(txtCarName.getText());
         car.setYearOfManufacture(Integer.parseInt(txtYear.getText()));
         car.setPrice(Integer.parseInt(txtPrice.getText()));
@@ -224,7 +247,7 @@ public class CUCarController {
             cbxGear.getItems().add("Tự động vô cấp");
             cbxGear.getItems().add("Ly hợp kép");
 
-            txtSeri.setText(editCar.getSeri());
+            txtSku.setText(editCar.getSku());
             txtCarName.setText(editCar.getCarName());
             txtYear.setText(editCar.getYearOfManufacture().toString());
             txtPrice.setText(editCar.getPrice().toString());
@@ -300,12 +323,12 @@ public class CUCarController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         String msg = "";
 
-        if (txtCarName.getText().isEmpty() || txtPrice.getText().isEmpty() || txtSeri.getText().isEmpty() || txtYear.getText().isEmpty() || cbxBrand.getSelectionModel().isEmpty() || cbxCategory.getSelectionModel().isEmpty() || cbxColor.getSelectionModel().isEmpty() || cbxFuel.getSelectionModel().isEmpty() || cbxGear.getSelectionModel().isEmpty() || cbxSeat.getSelectionModel().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
+        if (txtCarName.getText().isEmpty() || txtPrice.getText().isEmpty() || txtSku.getText().isEmpty() || txtYear.getText().isEmpty() || cbxBrand.getSelectionModel().isEmpty() || cbxCategory.getSelectionModel().isEmpty() || cbxColor.getSelectionModel().isEmpty() || cbxFuel.getSelectionModel().isEmpty() || cbxGear.getSelectionModel().isEmpty() || cbxSeat.getSelectionModel().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
             msg = "Không được để trống";
         } else {
             String name = txtCarName.getText();
             String price = txtPrice.getText();
-            String seri = txtSeri.getText();
+            String sku = txtSku.getText();
             String year = txtYear.getText();
 
             String regex = "[0-9]{1,10}";
@@ -330,20 +353,16 @@ public class CUCarController {
             }
 
             String regex2 = "[a-zA-Z0-9]{1,}";
-            if (!Pattern.matches(regex2, seri)) {
-                msg += "Seri xe chỉ gồm các kí tự từ 1-z, A-Z, 0-9 " + "\n";
-            }
-
-            if (Car.checkSeri(txtSeri.getText())) {
-                msg += "Seri xe nhập đã tồn tại, vui lòng kiểm tra lại" + "\n";
+            if (!Pattern.matches(regex2, sku)) {
+                msg += "Sku xe chỉ gồm các kí tự từ 1-z, A-Z, 0-9 " + "\n";
             }
 
             if (txtCarName.getText().length() > 50) {
                 msg += "Tên xe nhập không vượt quá 50 kí tự" + "\n";
             }
 
-            if (txtSeri.getText().length() > 17) {
-                msg += "Seri xe nhập không vượt quá 30 kí tự" + "\n";
+            if (txtSku.getText().length() > 10) {
+                msg += "Sku xe nhập không vượt quá 10 kí tự" + "\n";
             }
 
         }

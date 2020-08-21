@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,7 +25,7 @@ import javafx.collections.ObservableList;
 public class Car {
 
     private ObjectProperty<Integer> carID;
-    private StringProperty seri;
+    private StringProperty sku;
     private StringProperty carName;
     private StringProperty brand;
     private StringProperty category;
@@ -47,7 +45,7 @@ public class Car {
         brandID = new SimpleObjectProperty<>(null);
         categoryID = new SimpleObjectProperty<>(null);
         colorID = new SimpleObjectProperty<>(null);
-        seri = new SimpleStringProperty();
+        sku = new SimpleStringProperty();
         carName = new SimpleStringProperty();
         brand = new SimpleStringProperty();
         category = new SimpleStringProperty();
@@ -76,8 +74,8 @@ public class Car {
         return colorID.get();
     }
     
-    public String getSeri() {
-        return seri.get();
+    public String getSku() {
+        return sku.get();
     }
 
     public String getCarName() {
@@ -136,8 +134,9 @@ public class Car {
         this.colorID.set(colorID);
     }
 
-    public void setSeri(String seri) {
-        this.seri.set(seri);
+    public void setSku
+        (String sku) {
+        this.sku.set(sku);
     }
 
     public void setCarName(String carName) {
@@ -196,8 +195,8 @@ public class Car {
         return this.colorID;
     }
 
-    public StringProperty getSeriProperty() {
-        return this.seri;
+    public StringProperty getSkuProperty() {
+        return this.sku;
     }
 
     public StringProperty getCarNameProperty() {
@@ -246,12 +245,13 @@ public class Car {
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.seri,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID ");) {
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID ");) {
 
             while (rs.next()) {
                 Car b = new Car();
                 b.setCarID(rs.getInt("carID"));
-                b.setSeri(rs.getString("seri"));
+                b.setSku
+        (rs.getString("sku"));
                 b.setCarName(rs.getString("carName"));
                 b.setBrand(rs.getString("brand"));
                 b.setCategory(rs.getString("categoryName"));
@@ -280,18 +280,19 @@ public class Car {
         return cars;
     }
 
-    public static ObservableList<Car> selectCategory1() {
+    public static ObservableList<Car> selectCategory(int categoryID) {
         ObservableList<Car> cars = FXCollections.observableArrayList();
 
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.seri,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND category.categoryName = 'Xe Con';");) {
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND car.categoryID = " +categoryID);) {
 
             while (rs.next()) {
                 Car b = new Car();
                 b.setCarID(rs.getInt("carID"));
-                b.setSeri(rs.getString("seri"));
+                b.setSku
+        (rs.getString("sku"));
                 b.setCarName(rs.getString("carName"));
                 b.setBrand(rs.getString("brand"));
                 b.setCategory(rs.getString("categoryName"));
@@ -315,58 +316,21 @@ public class Car {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
+        System.out.println(cars.size());
         return cars;
     }
 
-    public static ObservableList<Car> selectCategory2() {
-        ObservableList<Car> cars = FXCollections.observableArrayList();
-
-        try (
-                Connection conn = DbService.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.seri,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND category.categoryName = 'Bán Tải';");) {
-
-            while (rs.next()) {
-                Car b = new Car();
-                b.setCarID(rs.getInt("carID"));
-                b.setSeri(rs.getString("seri"));
-                b.setCarName(rs.getString("carName"));
-                b.setBrand(rs.getString("brand"));
-                b.setCategory(rs.getString("categoryName"));
-                b.setYearOfManufacture(rs.getInt("YearOfManufacture"));
-                b.setGear(rs.getString("gear"));
-                b.setPrice(rs.getInt("price"));
-                b.setColor(rs.getString("color"));
-                b.setSeat(rs.getString("seat"));
-                b.setFuelUsed(rs.getString("fuelUsed"));
-                b.setBrandID(rs.getInt("brandID"));
-                b.setCategoryID(rs.getInt("categoryID"));
-                b.setColorID(rs.getInt("colorID"));
-                if (rs.getInt("status") == 0) {
-                    b.setStatus("Dừng Bán");
-                } else {
-                    b.setStatus("Đang Bán");
-                }
-
-                cars.add(b);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-
-        return cars;
-    }
 
     public static Car insert(Car newCar) throws SQLException {
-        String sql = "INSERT INTO car ( seri, carName, yearOfManufacture, price, seat, fuelUsed, gear, status, brandID, categoryID, colorID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO car ( sku, carName, yearOfManufacture, price, seat, fuelUsed, gear, status, brandID, categoryID, colorID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         ResultSet key = null;
         try (
                 Connection conn = DbService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 
-            stmt.setString(1, newCar.getSeri());
+            stmt.setString(1, newCar.getSku
+        ());
             stmt.setString(2, newCar.getCarName());
             stmt.setInt(3, newCar.getYearOfManufacture());
             stmt.setInt(4, newCar.getPrice());
@@ -417,13 +381,14 @@ public class Car {
 
     public static boolean update(Car updateCar) {
         String sql = "UPDATE car SET "
-                + "seri = ?, carName = ?, yearOfManufacture = ?, price = ?, seat = ?, fuelUsed = ?, gear = ?, status = ?, brandID = ?, categoryID = ?, colorID = ? WHERE car.carID = ?";
+                + "sku = ?, carName = ?, yearOfManufacture = ?, price = ?, seat = ?, fuelUsed = ?, gear = ?, status = ?, brandID = ?, categoryID = ?, colorID = ? WHERE car.carID = ?";
         System.out.println(updateCar);
         try (
                 Connection conn = DbService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);) {
 
-            stmt.setString(1, updateCar.getSeri());
+            stmt.setString(1, updateCar.getSku
+        ());
             stmt.setString(2, updateCar.getCarName());
             stmt.setInt(3, updateCar.getYearOfManufacture());
             stmt.setInt(4, updateCar.getPrice());
@@ -510,11 +475,12 @@ public class Car {
         }
     }
     
-    public static boolean checkSeri(String seri){
+    public static boolean checkSku
+        (String sku){
         try (
                 Connection conn = DbService.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Car Where seri = '"+ seri +"'");){
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Car Where sku = '"+ sku +"'");){
             
             if(rs.next()){
                 return true;
@@ -523,5 +489,84 @@ public class Car {
             System.err.println(e.getMessage());
         }
         return false;
+    }
+    
+    public static ObservableList<Car> getCarByBrand(int brandId) {
+        ObservableList<Car> cars = FXCollections.observableArrayList();
+
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND car.brandID = " + brandId);) {
+
+            while (rs.next()) {
+                Car b = new Car();
+                b.setCarID(rs.getInt("carID"));
+                b.setSku
+        (rs.getString("sku"));
+                b.setCarName(rs.getString("carName"));
+                b.setBrand(rs.getString("brand"));
+                b.setCategory(rs.getString("categoryName"));
+                b.setYearOfManufacture(rs.getInt("YearOfManufacture"));
+                b.setGear(rs.getString("gear"));
+                b.setPrice(rs.getInt("price"));
+                b.setColor(rs.getString("color"));
+                b.setSeat(rs.getString("seat"));
+                b.setFuelUsed(rs.getString("fuelUsed"));
+                b.setBrandID(rs.getInt("brandID"));
+                b.setCategoryID(rs.getInt("categoryID"));
+                b.setColorID(rs.getInt("colorID"));
+                if (rs.getInt("status") == 0) {
+                    b.setStatus("Dừng Bán");
+                } else {
+                    b.setStatus("Đang Bán");
+                }
+
+                cars.add(b);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return cars;
+    }
+    
+    public static ObservableList<Car> selectCarsByName(String carName) {
+        ObservableList<Car> cars = FXCollections.observableArrayList();
+
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT car.carID, car.sku,car.seat,car.fuelUsed,brand.brandID, brand.brand, Category.categoryID, category.categoryName, Car.carName, car.yearOfManufacture, car.price, car.status, car.gear,color.colorID, color.color FROM car, brand ,category,color WHERE brand.brandID = car.brandID AND category.categoryID = car.categoryID AND car.colorID = color.colorID AND car.carName like '%" +carName + "%'");) {
+
+            while (rs.next()) {
+                Car b = new Car();
+                b.setCarID(rs.getInt("carID"));
+                b.setSku
+        (rs.getString("sku"));
+                b.setCarName(rs.getString("carName"));
+                b.setBrand(rs.getString("brand"));
+                b.setCategory(rs.getString("categoryName"));
+                b.setYearOfManufacture(rs.getInt("YearOfManufacture"));
+                b.setGear(rs.getString("gear"));
+                b.setPrice(rs.getInt("price"));
+                b.setColor(rs.getString("color"));
+                b.setSeat(rs.getString("seat"));
+                b.setFuelUsed(rs.getString("fuelUsed"));
+                b.setBrandID(rs.getInt("brandID"));
+                b.setCategoryID(rs.getInt("categoryID"));
+                b.setColorID(rs.getInt("colorID"));
+                if (rs.getInt("status") == 0) {
+                    b.setStatus("Dừng Bán");
+                } else {
+                    b.setStatus("Đang Bán");
+                }
+
+                cars.add(b);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return cars;
     }
 }

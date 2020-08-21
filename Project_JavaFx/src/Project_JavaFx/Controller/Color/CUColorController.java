@@ -41,16 +41,37 @@ public class CUColorController {
                 Color updateColor = extractColorFromFields();
                 updateColor.setColorID(this.editColor.getColorID());
 
-                boolean result = Color.update(updateColor);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                if (result) {
-                    alert.setHeaderText("Cập nhật màu sắc thành công");
-                    alert.show();
+                if (!updateColor.getColor().equals(editColor.getColor())) {
+                    if (!Color.checkColor(updateColor.getColor())) {
+                        boolean result = Color.update(updateColor);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        if (result) {
+                            alert.setHeaderText("Cập nhật màu sắc thành công");
+                            alert.show();
+                        } else {
+                            alert.setHeaderText("Cập nhật màu sắc không thành công");
+                            alert.show();
+                        }
+                        Navigator.getInstance().goToMain();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Phân loại đã tồn tại, vui lòng kiểm tra lại");
+                        alert.show();
+                    }
+
                 } else {
-                    alert.setHeaderText("Cập nhật màu sắc không thành công");
-                    alert.show();
+                    boolean result = Color.update(updateColor);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    if (result) {
+                        alert.setHeaderText("Cập nhật màu sắc thành công");
+                        alert.show();
+                    } else {
+                        alert.setHeaderText("Cập nhật màu sắc không thành công");
+                        alert.show();
+                    }
+                    Navigator.getInstance().goToMain();
+
                 }
-                Navigator.getInstance().goToMain();
             }
         }
     }
@@ -83,10 +104,7 @@ public class CUColorController {
         if (txtColor.getText().isEmpty()) {
             msg += "Không được để trống";
         } else {
-            if(Color.checkColor(txtColor.getText())){
-                msg = "Màu sắc nhập đã tồn tại, vui lòng kiểm tra lại" + "\n";
-            }
-            
+
             if (txtColor.getText().length() > 50) {
                 msg = "Màu sắc nhập không vượt quá 50 kí tự" + "\n";
             }

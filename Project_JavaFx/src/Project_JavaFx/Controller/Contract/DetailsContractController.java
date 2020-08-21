@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 public class DetailsContractController {
 
     @FXML
-    private Text txtSeri;
+    private Text txtSku;
 
     @FXML
     private Text txtCarName;
@@ -75,7 +75,7 @@ public class DetailsContractController {
         txtPhone.setText(contract.getPhone());
         txtPrice.setText(contract.getPrice().toString());
         txtRD.setText(contract.getProductReceiptDate());
-        txtSeri.setText(contract.getSeri());
+        txtSku.setText(contract.getSku());
         txtStatus.setText(contract.getStatus());
         txtdeposits.setText(contract.getDeposits().toString());
     }    

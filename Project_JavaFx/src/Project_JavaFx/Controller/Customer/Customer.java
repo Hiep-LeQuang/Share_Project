@@ -255,4 +255,31 @@ public class Customer {
         }
         return false;
     }
+
+    public static ObservableList<Customer> selectCustomerByCmnd(String cmnd) {
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
+
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM customer Where cmnd like '%" +cmnd + "%'");) {
+
+            while (rs.next()) {
+                Customer b = new Customer();
+                b.setCustomerID(rs.getInt("customerID"));
+                b.setCustomerName(rs.getString("customerName"));
+                b.setCmnd(rs.getString("cmnd"));
+                b.setPhone(rs.getString("phone"));
+                b.setAddress(rs.getString("address"));
+                b.setEmail(rs.getString("email"));
+                //b.setContractID(rs.getInt("contractID"));
+
+                customers.add(b);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return customers;
+    }
 }

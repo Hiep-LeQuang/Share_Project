@@ -20,7 +20,7 @@
       <Button layoutX="520.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="41.0" prefWidth="94.0" text="Sửa" />
       <Button layoutX="685.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnStatus" prefHeight="41.0" prefWidth="113.0" text="Dừng Bán \ Bán" />
       <Button alignment="CENTER" layoutX="855.0" layoutY="1.0" mnemonicParsing="false" onAction="#btnSearch" prefHeight="29.0" prefWidth="72.0" text="Tìm" textAlignment="CENTER" />
-      <TextField layoutX="665.0" layoutY="-1.0" onAction="#txtSearch" prefHeight="30.0" prefWidth="192.0" />
+      <TextField fx:id="txtSearch" layoutX="665.0" layoutY="-1.0" prefHeight="30.0" prefWidth="192.0" />
       <Text layoutX="589.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm Kiếm">
          <font>
             <Font name="System Bold" size="17.0" />

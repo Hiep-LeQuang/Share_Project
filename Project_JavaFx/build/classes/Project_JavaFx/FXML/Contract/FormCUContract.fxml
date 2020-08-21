@@ -65,7 +65,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Text layoutX="297.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seri Xe" textAlignment="CENTER">
+      <Text layoutX="327.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SKU" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -133,7 +133,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox fx:id="cbxSeri" layoutX="397.0" layoutY="125.0" onAction="#cbxSeri" prefHeight="33.0" prefWidth="215.0" />
+      <ComboBox fx:id="cbxSku" layoutX="397.0" layoutY="125.0" onAction="#cbxSku" prefHeight="33.0" prefWidth="215.0" />
       <TextField fx:id="txtNameCar" layoutX="399.0" layoutY="177.0" onAction="#txtNameCar" prefHeight="33.0" prefWidth="215.0" />
       <DatePicker fx:id="txtRD" layoutX="857.0" layoutY="181.0" onAction="#txtRD" prefHeight="33.0" prefWidth="215.0" />
       <Text layoutX="315.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CMND">

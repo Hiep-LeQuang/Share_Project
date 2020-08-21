@@ -180,4 +180,31 @@ public class Category {
         }
         return false;
     }
+    
+    public static ObservableList<Category> selectCategory(String category){
+        ObservableList<Category> categorys = FXCollections.observableArrayList();
+            
+        try (
+                Connection conn = DbService.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Category Where categoryName  like '%" +category + "%'");){
+            
+            while (rs.next()) {
+                Category c = new Category();
+                c.setCategoryID(rs.getInt("categoryID"));
+                c.setCategory(rs.getString("categoryName"));
+                if(rs.getInt("status") == 0){
+                     c.setStatus("Ngừng Kinh Doanh");
+                } else{
+                    c.setStatus("Đang Kinh Doanh");
+                }
+                
+                categorys.add(c);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return categorys;
+    }
 }

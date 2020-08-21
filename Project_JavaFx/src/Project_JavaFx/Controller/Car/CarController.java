@@ -5,14 +5,20 @@
  */
 package Project_JavaFx.Controller.Car;
 
+import Project_JavaFx.Controller.Brand.Brand;
+import Project_JavaFx.Controller.Category.Category;
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
 import java.sql.SQLException;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 /**
@@ -25,7 +31,7 @@ public class CarController {
     private TableView<Car> tvCars;
 
     @FXML
-    private TableColumn<Car, String> tcSeri;
+    private TableColumn<Car, String> tcSku;
 
     @FXML
     private TableColumn<Car, String> tcProduct;
@@ -55,27 +61,24 @@ public class CarController {
     private Pane secPane;
 
     @FXML
-    void btnBrand(ActionEvent event) {
-
-    }
+    private MenuButton MbCategory;
 
     @FXML
-    void btnCarName(ActionEvent event) {
-
-    }
+    private MenuButton MbBrand;
 
     @FXML
-    void btnYear(ActionEvent event) {
-
-    }
+    private TextField txtSearch;
 
     @FXML
     void btnSearch(ActionEvent event) {
+        String input = txtSearch.getText();
+        if (!input.isEmpty()) {
+            ObservableList<Car> cars = Car.selectCarsByName(input);
 
-    }
-
-    @FXML
-    void txtSearch(ActionEvent event) {
+            loadTable(cars);
+        } else {
+            loadTable(Car.selectAll());
+        }
 
     }
 
@@ -146,46 +149,43 @@ public class CarController {
 
     public void initialize() {
 
-        tvCars.setItems(Car.selectAll());
+        loadTable(Car.selectAll());
 
-        tcSeri.setCellValueFactory((Car) -> {
-            return Car.getValue().getSeriProperty();
-        });
+        ObservableList<Brand> brands = Brand.selectAll();
+        MbBrand.getItems().removeAll();
+        for (Brand brand : brands) {
+            if (brand.getStatus() == "Đang Kinh Doanh") {
+                MenuItem item = new MenuItem(brand.getBrand());
+                item.setOnAction(a -> {
+                    ObservableList<Car> cars = Car.getCarByBrand(brand.getBrandID());
+                    loadTable(cars);
+                });
+                MbBrand.getItems().add(item);
+            }
+        }
 
-        tcProduct.setCellValueFactory((Car) -> {
-            return Car.getValue().getCarNameProperty();
-        });
-        tcBrand.setCellValueFactory((Car) -> {
-            return Car.getValue().getBrandProperty();
-        });
-        tcCategory.setCellValueFactory((Car) -> {
-            return Car.getValue().getCategoryProperty();
-        });
-        tcYear.setCellValueFactory((Car) -> {
-            return Car.getValue().getYearOfManufactureProperty();
-        });
-        tcPrice.setCellValueFactory((Car) -> {
-            return Car.getValue().getPriceProperty();
-        });
-        tcGear.setCellValueFactory((Car) -> {
-            return Car.getValue().getGearProperty();
-        });
-        tcColor.setCellValueFactory((Car) -> {
-            return Car.getValue().getColorProperty();
-        });
-        tcStatus.setCellValueFactory((Car) -> {
-            return Car.getValue().getStatusProperty();
-        });
+        ObservableList<Category> categorys = Category.selectAll();
+
+        MbCategory.getItems().removeAll();
+        for (Category category : categorys) {
+            if (category.getStatus() == "Đang Kinh Doanh") {
+                MenuItem item = new MenuItem(category.getCategory());
+                item.setOnAction(a -> {
+                    ObservableList<Car> cars = Car.selectCategory(category.getCategoryID());
+                    loadTable(cars);
+                });
+                MbCategory.getItems().add(item);
+            }
+        }
     }
 
-    @FXML
-    void btnXecon(ActionEvent event) throws IOException {
+    void loadTable(ObservableList<Car> cars) {
+        tvCars.setItems(cars);
 
-        tvCars.setItems(Car.selectCategory1());
-        tvCars.refresh();
-        tcSeri.setCellValueFactory((Car) -> {
-            return Car.getValue().getSeriProperty();
+        tcSku.setCellValueFactory((Car) -> {
+            return Car.getValue().getSkuProperty();
         });
+
         tcProduct.setCellValueFactory((Car) -> {
             return Car.getValue().getCarNameProperty();
         });
@@ -207,41 +207,6 @@ public class CarController {
         tcColor.setCellValueFactory((Car) -> {
             return Car.getValue().getColorProperty();
         });
-
-        tcStatus.setCellValueFactory((Car) -> {
-            return Car.getValue().getStatusProperty();
-        });
-    }
-
-    @FXML
-    void btnBantai(ActionEvent event) {
-        tvCars.setItems(Car.selectCategory2());
-        tvCars.refresh();
-        tcSeri.setCellValueFactory((Car) -> {
-            return Car.getValue().getSeriProperty();
-        });
-        tcProduct.setCellValueFactory((Car) -> {
-            return Car.getValue().getCarNameProperty();
-        });
-        tcBrand.setCellValueFactory((Car) -> {
-            return Car.getValue().getBrandProperty();
-        });
-        tcCategory.setCellValueFactory((Car) -> {
-            return Car.getValue().getCategoryProperty();
-        });
-        tcYear.setCellValueFactory((Car) -> {
-            return Car.getValue().getYearOfManufactureProperty();
-        });
-        tcPrice.setCellValueFactory((Car) -> {
-            return Car.getValue().getPriceProperty();
-        });
-        tcGear.setCellValueFactory((Car) -> {
-            return Car.getValue().getGearProperty();
-        });
-        tcColor.setCellValueFactory((Car) -> {
-            return Car.getValue().getColorProperty();
-        });
-
         tcStatus.setCellValueFactory((Car) -> {
             return Car.getValue().getStatusProperty();
         });

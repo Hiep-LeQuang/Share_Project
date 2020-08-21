@@ -7,22 +7,28 @@ package Project_JavaFx.Controller.Color;
 
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 /**
  *
  * @author lehie
  */
 public class ColorController {
+
     @FXML
     private TableView<Color> tvColor;
 
     @FXML
     private TableColumn<Color, String> tcColor;
+
+    @FXML
+    private TextField txtSearch;
 
     @FXML
     void btnCreate(ActionEvent event) throws IOException {
@@ -31,12 +37,27 @@ public class ColorController {
 
     @FXML
     void btnSearch(ActionEvent event) {
+        String input = txtSearch.getText();
+        if (!input.isEmpty()) {
+            ObservableList<Color> colors = Color.selectColor(input);
 
+            tvColor.setItems(colors);
+
+            tcColor.setCellValueFactory((Color) -> {
+                return Color.getValue().getColorProperty();
+            });
+        } else {
+            tvColor.setItems(Color.selectAll());
+
+            tcColor.setCellValueFactory((Color) -> {
+                return Color.getValue().getColorProperty();
+            });
+        }
     }
 
     @FXML
     void btnUpdate(ActionEvent event) throws IOException {
-         Color updateColor = tvColor.getSelectionModel().getSelectedItem();
+        Color updateColor = tvColor.getSelectionModel().getSelectedItem();
 
         if (updateColor == null) {
             selectedColorWarning();
@@ -44,7 +65,7 @@ public class ColorController {
             Navigator.getInstance().goToCreateColor(updateColor);
         }
     }
-    
+
     private void selectedColorWarning() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Vui lòng chọn một thương hiệu");
@@ -52,17 +73,12 @@ public class ColorController {
         alert.showAndWait();
     }
 
-    @FXML
-    void txtSearch(ActionEvent event) {
+    public void initialize() {
 
-    }
-    
-    public void initialize(){
-        
         tvColor.setItems(Color.selectAll());
-        
-        tcColor.setCellValueFactory((Color)->{
+
+        tcColor.setCellValueFactory((Color) -> {
             return Color.getValue().getColorProperty();
-        });   
+        });
     }
 }

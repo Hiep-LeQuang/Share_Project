@@ -7,11 +7,13 @@ package Project_JavaFx.Controller.Brand;
 
 import Project_JavaFx.Controller.Navigator;
 import java.io.IOException;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 /**
  *
@@ -27,6 +29,9 @@ public class BrandController {
 
     @FXML
     private TableColumn<Brand, String> tcStatus;
+
+    @FXML
+    private TextField txtSearch;
 
     @FXML
     void btnCreate(ActionEvent event) throws IOException {
@@ -62,13 +67,31 @@ public class BrandController {
     }
 
     @FXML
-    void txtSearch(ActionEvent event) {
-
-    }
-
-    @FXML
     void btnSearch(ActionEvent event) {
+        String input = txtSearch.getText();
+        if (!input.isEmpty()) {
+            ObservableList<Brand> brands = Brand.selectBrand(input);
 
+            tvBrand.setItems(brands);
+
+            tcBrand.setCellValueFactory((Brand) -> {
+                return Brand.getValue().getBrandProperty();
+            });
+
+            tcStatus.setCellValueFactory((Brand) -> {
+                return Brand.getValue().getStatusProperty();
+            });
+        } else {
+            tvBrand.setItems(Brand.selectAll());
+
+            tcBrand.setCellValueFactory((Brand) -> {
+                return Brand.getValue().getBrandProperty();
+            });
+
+            tcStatus.setCellValueFactory((Brand) -> {
+                return Brand.getValue().getStatusProperty();
+            });
+        }
     }
 
     private void selectedBrandWarning() {
@@ -90,5 +113,5 @@ public class BrandController {
             return Brand.getValue().getStatusProperty();
         });
     }
-    
+
 }

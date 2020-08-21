@@ -44,17 +44,39 @@ public class CUBrandController {
             } else {
                 Brand updateBrand = extractBrandFromFields();
                 updateBrand.setBrandID(this.editBrand.getBrandID());
+                if (!updateBrand.getBrand().equals(editBrand.getBrand())) {
+                    
+                    if (!Brand.checkBrand(updateBrand.getBrand())) {
+                        boolean result = Brand.update(updateBrand);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        if (result) {
+                            alert.setHeaderText("Cập nhật thương hiệu thành công");
+                            alert.show();
+                        } else {
+                            alert.setHeaderText("Cập nhật thương hiệu không thành công");
+                            alert.show();
+                        }
+                        Navigator.getInstance().goToMain();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Thwowmng hiệu đã tồn tại");
+                        alert.show();
+                    }
 
-                boolean result = Brand.update(updateBrand);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                if (result) {
-                    alert.setHeaderText("Cập nhật thương hiệu thành công");
-                    alert.show();
                 } else {
-                    alert.setHeaderText("Cập nhật thương hiệu không thành công");
-                    alert.show();
+                    boolean result = Brand.update(updateBrand);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    if (result) {
+                        alert.setHeaderText("Cập nhật thương hiệu thành công");
+                        alert.show();
+                    } else {
+                        alert.setHeaderText("Cập nhật thương hiệu không thành công");
+                        alert.show();
+                    }
+                    Navigator.getInstance().goToMain();
+
                 }
-                Navigator.getInstance().goToMain();
+
             }
         }
     }
@@ -97,10 +119,7 @@ public class CUBrandController {
         if (txtBrand.getText().isEmpty() || cbxStatus.getSelectionModel().isEmpty()) {
             msg += "Không được để trống";
         } else {
-            if(Brand.checkBrand(txtBrand.getText())){
-                msg += "Tên thương hiệu đã tồn tại,vui lòng kiểm tra lại";
-            }
-            
+
             if (txtBrand.getText().length() > 50) {
                 msg += "Thương hiệu nhập không vượt quá 50 kí tự";
             }
